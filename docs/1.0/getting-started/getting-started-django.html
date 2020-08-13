@@ -455,9 +455,9 @@ The above copyright notice and this permission notice shall be included in all c
           <p><strong>Links</strong></p>
         </blockquote>
         <ul>
-          <li><a href="https://www.creative-tim.com/product/material-dashboard-django">Material Dashboard Django</a> - product page</li>
-          <li><a href="https://www.creative-tim.com/live/material-dashboard-django">Material Dashboard Django Demo</a> - LIVE App, default login credentials ** <em>test / ApS12_ZZs8</em> **</li>
-          <li><a href="https://github.com/creativetimofficial/material-dashboard-django/">Material Dashboard Django Sources</a> - MIT License, released on Github</li>
+          <li><a target="_blank" href="https://www.creative-tim.com/product/material-dashboard-django">Material Dashboard Django</a> - product page</li>
+          <li><a target="_blank" href="https://www.creative-tim.com/live/material-dashboard-django">Material Dashboard Django Demo</a> - LIVE App, default login credentials ** <em>test / ApS12_ZZs8</em> **</li>
+          <li><a target="_blank" href="https://github.com/creativetimofficial/material-dashboard-django/">Material Dashboard Django Sources</a> - MIT License, released on Github</li>
           <li>Tutorials
             <ul>
               <li><a href="./setup-centos-for-development.html">Set up <code class="highlighter-rouge">CentOS</code> for development</a></li>
@@ -509,14 +509,6 @@ Python 3.7.2 <span class="c"># &lt;--- All good</span>
 <span class="gp">$ </span>git version 2.10.1.windows.1 <span class="c"># &lt;--- All good</span>
 </code></pre>
         </div>
-        <p><br /></p>
-        <p>For more information on how to set up your environment please access the resources listed below. In case we’ve missed something, contact us on Discord.</p>
-        <ul>
-          <li><a href="/how-to/install-python">How to set up Python</a></li>
-          <li><a href="/how-to/setup-centos-for-development/">Setup CentOS for development</a></li>
-          <li><a href="/how-to/setup-ubuntu-for-development/">Setup Ubuntu for development</a></li>
-          <li><a href="/how-to/setup-windows-for-development/">Setup Windows for development</a></li>
-        </ul>
         <p><br /></p>
         <h2 id="build-the-app">Build the app</h2>
         <hr />
@@ -873,12 +865,12 @@ Python 3.7.2 <span class="c"># &lt;--- All good</span>
             <span class="c">&lt;!-- Html chunk rendered for guests users--&gt;</span>
 
             <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"nav-item "</span><span class="nt">&gt;</span>
-                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ url 'register' }"</span> <span class="na">class=</span><span class="s">"nav-link"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{% url 'register' %}"</span> <span class="na">class=</span><span class="s">"nav-link"</span><span class="nt">&gt;</span>
                     <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"tim-icons icon-laptop"</span><span class="nt">&gt;&lt;/i&gt;</span> Register
                 <span class="nt">&lt;/a&gt;</span>
             <span class="nt">&lt;/li&gt;</span>
             <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">"nav-item "</span><span class="nt">&gt;</span>
-                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{ url 'login' }"</span> <span class="na">class=</span><span class="s">"nav-link"</span><span class="nt">&gt;</span>
+                <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"{% url 'login' %}"</span> <span class="na">class=</span><span class="s">"nav-link"</span><span class="nt">&gt;</span>
                     <span class="nt">&lt;i</span> <span class="na">class=</span><span class="s">"tim-icons icon-single-02"</span><span class="nt">&gt;&lt;/i&gt;</span> Login
                 <span class="nt">&lt;/a&gt;</span>
             <span class="nt">&lt;/li&gt;</span>
