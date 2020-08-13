@@ -1,56 +1,61 @@
-.tim-row{
-    margin-bottom: 20px;
-}
 
-.tim-white-buttons {
-    background-color: #777777;
-}
-.typography-line{
+.tim-typo{
     padding-left: 25%;
-    margin-bottom: 35px;
+    margin-bottom: 40px;
     position: relative;
-    display: block;
     width: 100%;
 }
-.typography-line span{
+.tim-typo .tim-note{
+    bottom: 5px;
     color: #c0c1c2;
     display: block;
     font-weight: 400;
     font-size: 13px;
-    line-height: 13px;
+    line-height: 15px;
     left: 0;
+    margin-left: 20px;
     position: absolute;
     width: 260px;
-    text-transform: none;
-}
-.tim-row{
-    padding-top: 60px;
-}
-.tim-row h3{
-    margin-top: 0;
 }
 
-.offline-doc .page-header:before {
+/* offline-doc */
+
+.offline-doc .navbar.navbar-transparent {
+  padding-top: 25px;
+  border-bottom: none;
+}
+
+.offline-doc .navbar.navbar-transparent .navbar-minimize {
+  display: none;
+}
+
+.offline-doc .navbar.navbar-transparent .navbar-brand,
+.offline-doc .navbar.navbar-transparent .collapse .navbar-nav .nav-link {
+  color: #FFFFFF !important;
+}
+
+.offline-doc .footer {
+  z-index: 3 !important;
+}
+
+.offline-doc .page-header .container {
+  z-index: 3;
+}
+
+.offline-doc .page-header:after {
+  background-color: rgba(0, 0, 0, 0.5);
   content: "";
-  background: rgba(0,0,0,.75);
-}
-
-.offline-doc .page-header{
-  display: flex;
-  align-items: center;
-}
-
-.offline-doc .footer{
+  display: block;
+  height: 100%;
+  left: 0;
   position: absolute;
+  top: 0;
   width: 100%;
-  background: transparent;
-  bottom: 0;
-  color: #fff;
-  z-index: 1;
+  z-index: 2;
 }
 
-#map {
-  position: relative;
-  width: 100%;
-  height: 100vh;
+#map{
+  z-index: 2;
+  height: calc(100vh - 70px);
+  margin-top: 70px;
 }
