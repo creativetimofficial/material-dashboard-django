@@ -1268,7 +1268,6 @@ body.mdbootstrap .partner.creativetim {
 
 .language-bash::before {
   color: #009;
-  content: "$ ";
   user-select: none; }
 
 .language-powershell::before {
