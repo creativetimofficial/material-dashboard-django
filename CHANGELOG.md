@@ -1,6 +1,9 @@
 # Change Log
 
-## [Unreleased]
+## [1.0.1] 2021-02-10
+### Improvements
+
+- Bump Codebase: [Django Dashboard](https://github.com/app-generator/boilerplate-code-django-dashboard) v1.0.4     
 
 ### 2017-06-20 - Bug Fix
 Left menu selection based on the current page. Modified files:
