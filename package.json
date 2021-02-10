@@ -6,13 +6,13 @@
     "scripts": {},
     "repository": {
         "type": "git",
-        "url": "https://github.com/app-generator/django-dashboard-material"
+        "url": "https://github.com/creativetimofficial/material-dashboard-django"
     },
     "bugs": {
-        "url": "https://github.com/app-generator/django-dashboard-material/issues",
+        "url": "https://github.com/creativetimofficial/material-dashboard-django/issues",
         "email": "support@appseed.us"
     },
-    "author": "AppSeed App Generator <support@appseed.us> (https://appseed.us)",
+    "author": "Creative-Tim / AppSeed.us",
     "engines": {
         "node": ">=10.0.0"
     },
