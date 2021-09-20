@@ -203,8 +203,8 @@ The application can be easily executed in a docker container. The steps:
 > Get the code
 
 ```bash
-$ git clone https://github.com/app-generator/django-dashboard-material.git
-$ cd django-dashboard-material
+$ git clone https://github.com/creativetimofficial/material-dashboard-django.git
+$ cd material-dashboard-django
 ```
 
 > Start the app in Docker
