@@ -3,31 +3,33 @@
 {% block title %} Dashboard {% endblock %} 
 
 <!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+{% endblock stylesheets %}
 
 {% block content %}
-
+    <!----------------------------------------- tarjetas informativas ------------------------------------------------>
     <div class="row">
-      <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="col-lg-6 col-md-6 col-sm-6">
         <div class="card card-stats">
           <div class="card-header card-header-warning card-header-icon">
             <div class="card-icon">
-              <i class="material-icons">content_copy</i>
+              <i class="fa fa-globe" aria-hidden="true"></i>
             </div>
-            <p class="card-category">Used Space</p>
-            <h3 class="card-title">49/50
-              <small>GB</small>
+            <p class="card-category">Total en inventario</p>
+            <h3 class="card-title">{{ total_inventario }}
+              <small>Unidades</small>
             </h3>
           </div>
           <div class="card-footer">
             <div class="stats">
-              <i class="material-icons text-danger">warning</i>
-              <a href="#pablo">Get More Space...</a>
+                <a href=""><i class="fa fa-globe" aria-hidden="true"></i> Ver detalle</a>
             </div>
           </div>
         </div>
       </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
+      <div class="col-lg-6 col-md-6 col-sm-6">
         <div class="card card-stats">
           <div class="card-header card-header-success card-header-icon">
             <div class="card-icon">
@@ -37,381 +39,62 @@
             <h3 class="card-title">$34,245</h3>
           </div>
           <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">date_range</i> Last 24 Hours
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-danger card-header-icon">
-            <div class="card-icon">
-              <i class="material-icons">info_outline</i>
-            </div>
-            <p class="card-category">Fixed Issues</p>
-            <h3 class="card-title">75</h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">local_offer</i> Tracked from Github
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-3 col-md-6 col-sm-6">
-        <div class="card card-stats">
-          <div class="card-header card-header-info card-header-icon">
-            <div class="card-icon">
-              <i class="fa fa-twitter"></i>
-            </div>
-            <p class="card-category">Followers</p>
-            <h3 class="card-title">+245</h3>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">update</i> Just Updated
-            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-4">
-        <div class="card card-chart">
-          <div class="card-header card-header-success">
-            <div class="ct-chart" id="dailySalesChart"></div>
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">Daily Sales</h4>
-            <p class="card-category">
-              <span class="text-success"><i class="fa fa-long-arrow-up"></i> 55% </span> increase in today sales.</p>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">access_time</i> updated 4 minutes ago
-            </div>
-          </div>
+
+    <!------------------ Grafica--------------------->
+    <div class="card">
+        <div class="card-header card-header-primary"
+            <h4 class="card-title">Graficos</h4>
+            <p class="card-category"></p>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-chart">
-          <div class="card-header card-header-warning">
-            <div class="ct-chart" id="websiteViewsChart"></div>
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">Email Subscriptions</h4>
-            <p class="card-category">Last Campaign Performance</p>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">access_time</i> campaign sent 2 days ago
+        <div class="card-body">
+            <div class="row">
+                  <div class="col-md-12">
+                    <canvas id="graficoInventario" width="400" height="300"></canvas>
+                  </div>
+                </div>
+                <br>
+                <div class="row">
+                  <div class="col-md-6">
+                    <canvas id="graficoInventarioPorta" width="400" height="400"></canvas>
+                  </div>
+                    <div class="col-md-6">
+                    <canvas id="graficoInventarioLinea" width="400" height="400"></canvas>
+                  </div>
             </div>
-          </div>
         </div>
-      </div>
-      <div class="col-md-4">
-        <div class="card card-chart">
-          <div class="card-header card-header-danger">
-            <div class="ct-chart" id="completedTasksChart"></div>
-          </div>
-          <div class="card-body">
-            <h4 class="card-title">Completed Tasks</h4>
-            <p class="card-category">Last Campaign Performance</p>
-          </div>
-          <div class="card-footer">
-            <div class="stats">
-              <i class="material-icons">access_time</i> campaign sent 2 days ago
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
+
+    <!------------------ Tabla--------------------->
     <div class="row">
-      <div class="col-lg-6 col-md-12">
+      <div class="col-lg-12 col-md-12">
         <div class="card">
-          <div class="card-header card-header-tabs card-header-primary">
-            <div class="nav-tabs-navigation">
-              <div class="nav-tabs-wrapper">
-                <span class="nav-tabs-title">Tasks:</span>
-                <ul class="nav nav-tabs" data-tabs="tabs">
-                  <li class="nav-item">
-                    <a class="nav-link active" href="#profile" data-toggle="tab">
-                      <i class="material-icons">bug_report</i> Bugs
-                      <div class="ripple-container"></div>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#messages" data-toggle="tab">
-                      <i class="material-icons">code</i> Website
-                      <div class="ripple-container"></div>
-                    </a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href="#settings" data-toggle="tab">
-                      <i class="material-icons">cloud</i> Server
-                      <div class="ripple-container"></div>
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="tab-content">
-              <div class="tab-pane active" id="profile">
-                <table class="table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Sign contract for "What are conference organizers afraid of?"</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                      </td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Create 4 Invisible User Experiences you Never Knew About</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="tab-pane" id="messages">
-                <table class="table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                      </td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Sign contract for "What are conference organizers afraid of?"</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <div class="tab-pane" id="settings">
-                <table class="table">
-                  <tbody>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="">
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Lines From Great Russian Literature? Or E-mails From My Boss?</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Flooded: One year later, assessing what was lost and what was found when a ravaging rain swept through metro Detroit
-                      </td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="form-check">
-                          <label class="form-check-label">
-                            <input class="form-check-input" type="checkbox" value="" checked>
-                            <span class="form-check-sign">
-                              <span class="check"></span>
-                            </span>
-                          </label>
-                        </div>
-                      </td>
-                      <td>Sign contract for "What are conference organizers afraid of?"</td>
-                      <td class="td-actions text-right">
-                        <button type="button" rel="tooltip" title="Edit Task" class="btn btn-primary btn-link btn-sm">
-                          <i class="material-icons">edit</i>
-                        </button>
-                        <button type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-link btn-sm">
-                          <i class="material-icons">close</i>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-6 col-md-12">
-        <div class="card">
-          <div class="card-header card-header-warning">
-            <h4 class="card-title">Employees Stats</h4>
-            <p class="card-category">New employees on 15th September, 2016</p>
+          <div class="card-header card-header-primary">
+            <h4 class="card-title">Inventario</h4>
+            <p class="card-category"></p>
           </div>
           <div class="card-body table-responsive">
-            <table class="table table-hover">
-              <thead class="text-warning">
+            <table class="table table-hover table-striped" id="employeeTable">
+              <thead class="text-primary">
                 <th>ID</th>
-                <th>Name</th>
-                <th>Salary</th>
-                <th>Country</th>
+                <th>Nombre</th>
+                <th>Descripcion</th>
+                <th>Cantidad</th>
+                <th>precio</th>
               </thead>
               <tbody>
+              {% for inv in inventario %}
                 <tr>
-                  <td>1</td>
-                  <td>Dakota Rice</td>
-                  <td>$36,738</td>
-                  <td>Niger</td>
+                    <td>{{ inv.id }}</td>
+                    <td>{{ inv.nombre }}</td>
+                    <td>{{ inv.descripcion }}</td>
+                    <td>{{ inv.cantidad }}</td>
+                    <td>{{ inv.precio }}</td>
                 </tr>
-                <tr>
-                  <td>2</td>
-                  <td>Minerva Hooper</td>
-                  <td>$23,789</td>
-                  <td>Curaçao</td>
-                </tr>
-                <tr>
-                  <td>3</td>
-                  <td>Sage Rodriguez</td>
-                  <td>$56,142</td>
-                  <td>Netherlands</td>
-                </tr>
-                <tr>
-                  <td>4</td>
-                  <td>Philip Chaney</td>
-                  <td>$38,735</td>
-                  <td>Korea, South</td>
-                </tr>
+                {% endfor %}
               </tbody>
             </table>
           </div>
@@ -421,15 +104,144 @@
 
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
 
-  <script>
-    $(document).ready(function() {
-      // Javascript method's body can be found in assets/js/demos.js
-      md.initDashboardPageCharts();
+<script>
 
+  $(document).ready(function() {
+    $('#employeeTable').DataTable({
+      responsive: false, // Permite que la tabla sea responsive
+      "language": {
+        "lengthMenu": "Mostrar _MENU_ registros por página", // Cambia el texto de la paginación
+        "zeroRecords": "No se encontraron resultados en su búsqueda", // Cambia el texto de cuando no hay registros
+        "searchPlaceholder": "Buscar registros", // Cambia el texto del buscador
+        "info": "Mostrando registros de _START_ al _END_ de un total de _TOTAL_", // Cambia el texto de la información de la tabla
+        "infoEmpty": "No existen registros", // Cambia el texto de cuando no hay registros
+        "infoFiltered": "(filtrado de un total de _MAX_ registros)", // Cambia el texto de cuando se filtra
+        "search": "Buscar:", // Cambia el texto del buscador
+        "paginate": {
+          "previous": "Anterior", // Cambia el texto del botón "Anterior"
+          "next": "Siguiente"     // Cambia el texto del botón "Siguiente"
+        }
+      }
     });
-  </script>
+  });
+
+
+</script>
+
+<script>
+// Función para generar un color aleatorio en formato hexadecimal
+  function generarColorAleatorio() {
+    const letras = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+      color += letras[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
+
+//-------------Grafico de barras----------------
+    // Obtener los datos desde la vista con AJAX
+    fetch("{% url 'home:inventario_chart' %}")
+      .then(response => response.json())
+      .then(data => {
+        const ctx = document.getElementById('graficoInventario').getContext('2d');
+        const cantidades = data.cantidades;
+
+        const coloresAleatorios = cantidades.map(generarColorAleatorio);
+
+        const chart = new Chart(ctx, {
+          type: 'bar', // Tipo de gráfico (barra)
+          data: {
+            labels: data.categorias, // Etiquetas del eje X (categorías)
+            datasets: [{
+              label: 'Cantidad de inventario',
+              data: data.cantidades, // Datos de las cantidades
+              backgroundColor: coloresAleatorios, // Colores de las barras
+              borderColor: 'rgba(75, 192, 192, 1)', // Color del borde de las barras
+              borderWidth: 1 // Ancho del borde de las barras
+            }]
+          },
+          options: {
+           responsive: true, // Habilitar la responsividad
+            maintainAspectRatio: false, // Desactivar la relación de aspecto fijo
+            scales: {
+              y: {
+                beginAtZero: true // Comenzar el eje Y desde el valor 0
+              }
+            }
+          }
+        });
+      });
+
+// ------------Grafico de polar----------------
+  // Obtener los datos desde la vista con AJAX
+  fetch("{% url 'home:inventario_chart' %}")
+    .then(response => response.json())
+    .then(data => {
+      const ctx = document.getElementById('graficoInventarioPorta').getContext('2d');
+      const cantidades = data.cantidades;
+
+      // Generar una lista de colores aleatorios con la misma longitud que las cantidades
+      const coloresAleatorios = cantidades.map(generarColorAleatorio);
+
+      const chart = new Chart(ctx, {
+        type: 'polarArea', // Cambiar el tipo de gráfico a pie chart
+        data: {
+          labels: data.categorias, // Etiquetas para las secciones del gráfico
+          datasets: [{
+            data: cantidades, // Datos de las cantidades
+            backgroundColor: coloresAleatorios, // Colores de fondo de las secciones
+            borderColor: 'rgba(75, 192, 192, 1)', // Color del borde de las secciones
+            borderWidth: 1 // Ancho del borde de las secciones
+          }]
+        },
+        options: {
+          responsive: true, // Habilitar la responsividad
+          maintainAspectRatio: false, // Desactivar la relación de aspecto fijo
+        }
+      });
+    });
+
+// ------------Grafico de Linea----------------
+fetch("{% url 'home:inventario_chart' %}")
+    .then(response => response.json())
+    .then(data => {
+      const ctx = document.getElementById('graficoInventarioLinea').getContext('2d');
+      const cantidades = data.cantidades;
+
+      // Generar una lista de colores aleatorios con la misma longitud que las cantidades
+      const coloresAleatorios = cantidades.map(generarColorAleatorio);
+
+      const chart = new Chart(ctx, {
+        type: 'line', // Cambiar el tipo de gráfico a line chart (línea)
+        data: {
+          labels: data.categorias, // Etiquetas para el eje X (categorías)
+          datasets: [{
+            label: 'Cantidad de inventario',
+            data: cantidades, // Datos de las cantidades
+            fill: false, // No rellenar el área bajo la línea
+            backgroundColor: coloresAleatorios[0], // Color de fondo de la línea
+            borderColor: coloresAleatorios[1], // Color de la línea
+            borderWidth: 1 // Ancho de la línea
+          }]
+        },
+        options: {
+          responsive: true, // Habilitar la responsividad
+          maintainAspectRatio: false, // Desactivar la relación de aspecto fijo
+          scales: {
+            x: {
+              display: true // Mostrar el eje X
+            },
+            y: {
+              beginAtZero: true // Comenzar el eje Y desde el valor 0
+            }
+          }
+        }
+      });
+    });
+</script>
+
 
 {% endblock javascripts %}

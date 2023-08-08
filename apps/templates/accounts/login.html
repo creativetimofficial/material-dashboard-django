@@ -1,6 +1,6 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Login {% endblock %} 
+{% block title %} Iniciar sesion {% endblock %}
 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
@@ -12,7 +12,7 @@
       <div class="card">
         <div class="card-header card-header-primary">
           <h4 class="card-title">
-            Login
+            INICIAR SESIÓN
           </h4>
         </div>
         <div class="card-body">
@@ -21,20 +21,20 @@
               {% if msg %}
                 <span class="text-danger">{{ msg | safe }}</span>
               {% else %}
-                  Add your credentials
+                  Inicia sesión
               {% endif %}  
           </h6>
           
           <br />
 
           <form role="form" method="post" action="">
-              
-            {% csrf_token %} 
+
+            {% csrf_token %}
 
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label class="bmd-label-floating">Username</label>
+                  <label class="bmd-label-floating">Nombre de usuario</label>
                   {{ form.username }}
                 </div>
               </div>
@@ -45,7 +45,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label class="bmd-label-floating">Password</label>
+                  <label class="bmd-label-floating">Contraseña</label>
                   {{ form.password }}
                 </div>
               </div>
@@ -57,7 +57,7 @@
 
             &nbsp; &nbsp; 
             <span class="pull-right">
-              Don't have an account? <a href="{% url 'register' %}" class="text-primary">Create</a>
+              No tienes cuenta? <a href="{% url 'register' %}" class="text-primary">Crear</a>
             </span>
 
             <div class="clearfix"></div>
