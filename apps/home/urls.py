@@ -22,6 +22,7 @@ urlpatterns = [
 
     #CALENDARIO
     path('calendario', views.Calendarioview.as_view(), name='calendario'),
+    path('actualizar-evento', views.UpdateCalendarioView.as_view(), name='actualizar_evento'),
 
     # Matches any html file
     re_path(r'^.*\.*', views.pages, name='pages'),

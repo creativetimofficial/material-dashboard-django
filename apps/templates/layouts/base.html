@@ -107,17 +107,18 @@
 
         <div class="container-fluid">
           <h3>{% block title_detail %} {% endblock %}</h3>
-          {% block content %}
-
-          <!--Contenido de formularios-->
-            <div class="container-fluid col-md-12">
-              {% if messages %}
+          {% if messages %}
                 {% for message in messages %}
                   <div id="success" class="alert alert-{{ message.tags }} alert-dismissible fade show {% if message.tags == 'error' %}alert-danger{% endif %}" role="alert">
                     {{ message }}
                   </div>
                 {% endfor %}
               {% endif %}
+
+          {% block content %}
+
+          <!--Contenido de formularios-->
+            <div class="container-fluid col-md-12">
               <h3>{% block title_module %}{% endblock %}</h3>
               <div class="card">
                 <div class="card-header card-header-primary">
@@ -166,7 +167,7 @@
 
   <script>
     // Ocultar la capa de superposición cuando la página haya cargado completamente
-      window.onload = function() {
+    window.onload = function() {
       var overlay = document.getElementById('overlay');
       overlay.style.opacity = '0';
 
@@ -174,13 +175,11 @@
         overlay.style.display = 'none';
       }, 400); // 500ms para dar tiempo a la transición antes de ocultar la capa
     };
-  </script>
 
-  <script>
-      // Ocultar el mensaje de éxito después de 2 segundos
-      setTimeout(function() {
-          $("#success").alert("close");
-      }, 2000);
+    // Ocultar el mensaje de éxito después de 2 segundos
+    setTimeout(function() {
+        $("#success").alert("close");
+    }, 2000);
 
   </script>
 

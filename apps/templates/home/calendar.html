@@ -17,6 +17,10 @@
             <p class="card-category"></p>
         </div>
         <div class="card-body">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <b>Seleccione un dia para agregar un evento al calendario</b>
+                <span class="close" data-dismiss="alert">×</span>
+            </div>
             <div class="row">
                 <div id="calendar"></div>
             </div>
@@ -48,6 +52,10 @@
                         {{ form.fecha_inicio.label_tag }}
                         {{ form.fecha_inicio }}
                       </div>
+                        <div class="col-md-6">
+                        {{ form.fecha_fin.label_tag }}
+                        {{ form.fecha_fin }}
+                      </div>
                     </div>
                      <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" id="closeModalBtn">Cerrar</button>
@@ -59,11 +67,31 @@
     </div>
 </div>
 
+<!-- Modal para ver detalles del evento -->
+<div class="modal fade" id="modalEventDetails" tabindex="-1" aria-labelledby="modalEventDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEventDetailsLabel">Detalles del Evento</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Contenido de los detalles del evento -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 {% endblock content %}
 
 {% block javascripts %}
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
 <script>
     //mostrar calendario
@@ -81,31 +109,77 @@
             buttonText: {
                 today: 'Hoy' // Cambiar el texto del botón "today" a "Hoy"
             },
-            viewsButtonText: {
-                month: 'Mes', // Cambiar el texto del botón de vista "month" a "Mes"
-                week: 'Semana' // Cambiar el texto del botón de vista "week" a "Semana"
-            },
             defaultView: 'month',
-            defaultDate: '2021-07-07',
+            defaultDate: moment(),
             navLinks: true, // can click day/week names to navigate views
             editable: true,
             eventLimit: true, // allow "more" link when too many events
             themeSystem: 'bootstrap4',
+            selectable: true,
             events: [
                 {% for event in eventos %}
                 {
+                    id : '{{ event.id }}',
                     title: '{{ event.titulo }}',
-                    start: '{{ event.fecha_inicio }}',
+                    start: '{{ event.fecha_inicio.isoformat }}',
+                    end: '{{ event.fecha_fin.isoformat }}',
+                    description: '{{ event.descripcion }}',
                 },
                 {% endfor %}
             ],
-            // Al hacer clic en un día vacío del calendario se abre el modal para agregar un evento
-            dayClick: function(date, jsEvent, view) {
-                selectedDate = date.format('YYYY-MM-DD');
-                $('#id_fecha_inicio').val(selectedDate);
+            // Al seleccionar un rango de fechas se muestra el modal para agregar un evento
+            select: function(start, end) {
+                // Muestra un modal con un formulario para agregar un nuevo evento
                 $('#modalAddEvent').modal('show');
-            }
-        });
+
+                // Rellena el formulario con las fechas seleccionadas
+                $('#id_fecha_inicio').val(start.format('YYYY-MM-DD HH:mm:ss'));
+                var fecha_fin = end.subtract(1, 'days');
+                $('#id_fecha_fin').val(fecha_fin.format('YYYY-MM-DD HH:mm:ss'));
+            },
+            // Mostrar el modal con los detalles del evento
+            eventClick: function(event, jsEvent, view) {
+            $('#modalEventDetails .modal-title').text(event.title);
+            $('#modalEventDetails .modal-body').html(
+                '<p>Fecha de inicio: ' + event.start.format('YYYY-MM-DD HH:mm:ss') + '</p>' +
+                '<p>Fecha de fin: ' + event.end.subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss') + '</p>' +
+                '<p>Titulo: ' + event.title + '</p>' +
+                '<p>Descripcion: ' + event.description + '</p>'
+                );
+                $('#modalEventDetails').modal('show');
+            },
+            // Al arrastrar y soltar un evento se actualiza la fecha de inicio
+            eventDrop: function(event, delta, revertFunc) {
+                $.ajax({
+                    url: '{% url "home:actualizar_evento" %}',
+                    data: {
+                        'id': event.id,
+                        'start': event.start.format('YYYY-MM-DD HH:mm:ss'), // Fecha actualizada de inicio
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status == 'success') {
+                            Swal.fire({
+                                title: 'Fecha actualizada',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 1000,
+                            });
+                        } else {
+                            revertFunc();
+                            Swal.fire({
+                                title: 'Error al cambiar la fecha',
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 2000,
+                            });
+                        }
+                    },
+                });
+            },
+        });//fin fullcalendar
     });
 </script>
 

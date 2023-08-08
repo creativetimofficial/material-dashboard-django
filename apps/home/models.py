@@ -36,7 +36,8 @@ class EventoCaledario(models.Model):
 
     titulo = models.CharField(max_length=100, null=True, blank=True)
     descripcion = models.CharField(max_length=100, null=True, blank=True)
-    fecha_inicio = models.DateField(null=True, blank=True)
+    fecha_inicio = models.DateTimeField(null=True, blank=True)
+    fecha_fin = models.DateTimeField(null=True, blank=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):

@@ -12,7 +12,7 @@ from django.shortcuts import render
 from django.template import loader
 from django.urls import reverse
 from django.views import View
-from django.views.generic import FormView, TemplateView, DetailView
+from django.views.generic import FormView, TemplateView, DetailView, UpdateView
 
 #Propios
 from apps.home.forms import *
@@ -51,11 +51,11 @@ def pages(request):
 
     except template.TemplateDoesNotExist:
 
-        html_template = loader.get_template('home/page-404.html')
+        html_template = loader.get_template('layouts/page-404.html')
         return HttpResponse(html_template.render(context, request))
 
     except:
-        html_template = loader.get_template('home/page-500.html')
+        html_template = loader.get_template('layouts/page-500.html')
         return HttpResponse(html_template.render(context, request))
 
 
@@ -141,12 +141,11 @@ def inventario_chart(request):
     categorias = list(inventario_por_categoria.keys())
     cantidades = list(inventario_por_categoria.values())
 
-    # Retornar los datos en formato JSON
     return JsonResponse({'categorias': categorias, 'cantidades': cantidades})
+
 
 class Calendarioview(TemplateView, FormView):
 
-    #crear vista par< mostrar calendario
     template_name = 'home/calendar.html'
     form_class = EventoCalendarioForm
     success_url = '/calendario'
@@ -160,11 +159,28 @@ class Calendarioview(TemplateView, FormView):
     def form_valid(self, form):
         evento = form.save(commit=False)
         evento.save()
+        messages.success(self.request, 'El evento se ha registrado exitosamente.')
         return super().form_valid(form)
 
     def form_invalid(self, form):
         errors = form.errors
+        for error in errors:
+            messages.error(self.request, 'Se ha producido un error en el formulario.')
         return super().form_invalid(form)
 
+class UpdateCalendarioView(View):
+
+    def post(self, request, *args, **kwargs):
+
+        if request.is_ajax():
+            try:
+                id = request.POST.get('id')
+                fecha_inicio = request.POST.get('start')
+                evento = EventoCaledario.objects.get(pk=id)
+                evento.fecha_inicio = fecha_inicio
+                evento.save()
+                return JsonResponse({'status': 'success'})
+            except:
+                return JsonResponse({'status': 'error'})
 
 

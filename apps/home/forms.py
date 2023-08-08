@@ -24,14 +24,16 @@ class EventoCalendarioForm(forms.ModelForm):
 
     class Meta:
         model = EventoCaledario
-        fields = ('titulo', 'descripcion', 'fecha_inicio')
+        fields = ('titulo', 'descripcion', 'fecha_inicio' , 'fecha_fin')
         widgets = {
             'titulo': forms.TextInput(attrs={'class': 'form-control'}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
             'fecha_inicio': forms.DateTimeInput(),
+            'fecha_fin': forms.DateTimeInput(),
         }
 
     def __init__(self, *args, **kwargs):
         super(EventoCalendarioForm, self).__init__(*args, **kwargs)
         self.fields['fecha_inicio'].widget.attrs.update({'class': 'form-control'})
+        self.fields['fecha_fin'].widget.attrs.update({'class': 'form-control'})
 
