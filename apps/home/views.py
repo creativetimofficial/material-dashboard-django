@@ -183,4 +183,8 @@ class UpdateCalendarioView(View):
             except:
                 return JsonResponse({'status': 'error'})
 
+class StaticPageView(TemplateView):
+
+    template_name = 'static_page/static_page.html'
+
 

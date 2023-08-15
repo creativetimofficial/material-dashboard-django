@@ -11,6 +11,7 @@ app_name = 'home'
 urlpatterns = [
 
     #Pagina de inicio
+    path('', views.StaticPageView.as_view(), name='static_page'),
     path('inicio', views.index.as_view(), name='inicio'),
     # Inventario
     path('registrar-inventario', views.RegistrarInventarioView.as_view(), name='registrar_inventario'),

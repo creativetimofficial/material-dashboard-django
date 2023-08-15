@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Inventario</title>
+    <!-- Agregar enlace a los archivos CSS de Bootstrap -->
+    <link href="/static/assets/css/material-dashboard.css?v=2.4.5" rel="stylesheet" />
+</head>
+<style>
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white; /* Cambiar el color del fondo a blanco */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999; /* Asegurar que la capa se muestre por encima de todo */
+        opacity: 1; /* Opacidad inicial, 1 es totalmente visible */
+        transition: opacity 0.5s ease; /* Transición de opacidad durante 0.5 segundos con efecto suave */
+      }
+
+
+    .overlay-content {
+        color: black; /* Cambiar el color del texto a negro */
+        font-size: 24px;
+      }
+    .spinner {
+        border: 4px solid #f3f3f3; /* Color del borde */
+        border-top: 4px solid #3498db; /* Color del borde del spinner */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 0.7s linear infinite; /* Animación de rotación */
+      }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+</style>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">Gestión de Inventario</a>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'authentication:login' %}">Iniciar Sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                <h1>Bienvenido a la página de gestión de inventario</h1>
+                <p class="lead">Aquí podrás controlar y administrar tu inventario de productos de manera eficiente.</p>
+            </div>
+        </div>
+    </div>
+
+    <!---------- Contenido de noticias -------------->
+    <div class="container mt-5">
+        <h2>Últimas novedades</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://picsum.photos/200/150" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Título de la noticia 1</h5>
+                        <p class="card-text">Descripción breve de la noticia 1.</p>
+                        <a href="#" class="btn btn-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://picsum.photos/200/150" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Título de la noticia 1</h5>
+                        <p class="card-text">Descripción breve de la noticia 1.</p>
+                        <a href="#" class="btn btn-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://picsum.photos/200/150" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Título de la noticia 1</h5>
+                        <p class="card-text">Descripción breve de la noticia 1.</p>
+                        <a href="#" class="btn btn-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Agrega más tarjetas de noticias aquí -->
+        </div>
+    </div> <!---------- Contenido de noticias -------------->
+
+    <!---------- loading -------------->
+    <div id="overlay">
+        <div class="overlay-content">
+            <div class="spinner"></div>
+        </div>
+    </div>
+    <!---------- loading -------------->
+</body>
+<!-- Agregar enlace al archivo JS de Bootstrap -->
+<script>
+    window.onload = function() {
+      var overlay = document.getElementById('overlay');
+      overlay.style.opacity = '0';
+
+    setTimeout(function() {
+        overlay.style.display = 'none';
+      }, 400); // 500ms para dar tiempo a la transición antes de ocultar la capa
+    };
+</script>
+</html>

@@ -55,13 +55,19 @@
           </li>
 
           <li class="nav-item ">
-            <a class="nav-link" href="{% url 'logout' %}" >
+            <a class="nav-link" href="{% url 'authentication:logout' %}" >
               <i class="material-icons">directions_run</i>
               <p>Cerrar sesion</p>
             </a>
           </li>
         {% else %}
 
+            <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+                <a class="nav-link" href="{% url 'home:static_page' %}">
+                <i class="fa fa-home"></i>
+                <p>Pagina de Inicio</p>
+                </a>
+            </li>
         {% endif %}
         </ul>
       </div>
