@@ -1,0 +1,193 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Calendario {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.5.1/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar-scheduler/1.10.1/scheduler.min.css" rel="stylesheet">
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="row">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title">Calendario</h4>
+            <p class="card-category"></p>
+        </div>
+        <div class="card-body">
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <b>Seleccione un dia para agregar un evento al calendario</b>
+                <span class="close" data-dismiss="alert">×</span>
+            </div>
+            <div class="row">
+                <div id="calendar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal para agregar evento -->
+<div class="modal fade" id="modalAddEvent" tabindex="-1" aria-labelledby="modalAddEventLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalAddEventLabel">Agregar Evento</h5>
+            </div>
+            <div class="modal-body">
+                  <form id="eventForm" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        {{ form.titulo.label_tag }}
+                        {{ form.titulo }}
+                      </div>
+                      <div class="col-md-6">
+                        {{ form.descripcion.label_tag }}
+                        {{ form.descripcion }}
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <div class="col-md-6">
+                        {{ form.fecha_inicio.label_tag }}
+                        {{ form.fecha_inicio }}
+                      </div>
+                        <div class="col-md-6">
+                        {{ form.fecha_fin.label_tag }}
+                        {{ form.fecha_fin }}
+                      </div>
+                    </div>
+                     <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="closeModalBtn">Cerrar</button>
+                        <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-floppy-o" ></i> Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para ver detalles del evento -->
+<div class="modal fade" id="modalEventDetails" tabindex="-1" aria-labelledby="modalEventDetailsLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalEventDetailsLabel">Detalles del Evento</h5>
+            </div>
+            <div class="modal-body">
+                <!-- Contenido de los detalles del evento -->
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block javascripts %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/locale/es.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    //mostrar calendario
+
+    $(document).ready(function() {
+        $('#calendar').fullCalendar({
+            schedulerLicenseKey: 'CC-Attribution-NonCommercial-NoDerivatives',
+            locale: 'es',
+            height: 800,
+            header: {
+                left: 'prev,next, today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay,listWeek'
+            },
+            buttonText: {
+                today: 'Hoy' // Cambiar el texto del botón "today" a "Hoy"
+            },
+            defaultView: 'month',
+            defaultDate: moment(),
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            themeSystem: 'bootstrap4',
+            selectable: true,
+            events: [
+                {% for event in eventos %}
+                {
+                    id : '{{ event.id }}',
+                    title: '{{ event.titulo }}',
+                    start: '{{ event.fecha_inicio.isoformat }}',
+                    end: '{{ event.fecha_fin.isoformat }}',
+                    description: '{{ event.descripcion }}',
+                },
+                {% endfor %}
+            ],
+            // Al seleccionar un rango de fechas se muestra el modal para agregar un evento
+            select: function(start, end) {
+                // Muestra un modal con un formulario para agregar un nuevo evento
+                $('#modalAddEvent').modal('show');
+
+                // Rellena el formulario con las fechas seleccionadas
+                $('#id_fecha_inicio').val(start.format('YYYY-MM-DD HH:mm:ss'));
+                var fecha_fin = end.subtract(1, 'days');
+                $('#id_fecha_fin').val(fecha_fin.format('YYYY-MM-DD HH:mm:ss'));
+            },
+            // Mostrar el modal con los detalles del evento
+            eventClick: function(event, jsEvent, view) {
+            $('#modalEventDetails .modal-title').text(event.title);
+            $('#modalEventDetails .modal-body').html(
+                '<p>Fecha de inicio: ' + event.start.format('YYYY-MM-DD HH:mm:ss') + '</p>' +
+                '<p>Fecha de fin: ' + event.end.subtract(1, 'days').format('YYYY-MM-DD HH:mm:ss') + '</p>' +
+                '<p>Titulo: ' + event.title + '</p>' +
+                '<p>Descripcion: ' + event.description + '</p>'
+                );
+                $('#modalEventDetails').modal('show');
+            },
+            // Al arrastrar y soltar un evento se actualiza la fecha de inicio
+            eventDrop: function(event, delta, revertFunc) {
+                $.ajax({
+                    url: '{% url "home:actualizar_evento" %}',
+                    data: {
+                        'id': event.id,
+                        'start': event.start.format('YYYY-MM-DD HH:mm:ss'), // Fecha actualizada de inicio
+                        'csrfmiddlewaretoken': '{{ csrf_token }}'
+                    },
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.status == 'success') {
+                            Swal.fire({
+                                title: 'Fecha actualizada',
+                                icon: 'success',
+                                showConfirmButton: false,
+                                timer: 1000,
+                            });
+                        } else {
+                            revertFunc();
+                            Swal.fire({
+                                title: 'Error al cambiar la fecha',
+                                icon: 'error',
+                                showConfirmButton: false,
+                                timer: 2000,
+                            });
+                        }
+                    },
+                });
+            },
+        });//fin fullcalendar
+    });
+</script>
+
+<script>
+    $('#closeModalBtn').click(function() {
+        $('#modalAddEvent').modal('hide');
+    });
+</script>
+
+
+{% endblock javascripts %}
