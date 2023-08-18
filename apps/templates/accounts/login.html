@@ -2,16 +2,29 @@
 
 {% block title %} Iniciar sesion {% endblock %}
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<style>
+  .custom-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .custom-form {
+  }
+
+</style>
+{% endblock stylesheets %}
 
 {% block content %}
 
-  <div class="row">
-    <div class="col-md-5">
-      <div class="card">
+<div class="container">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-5 custom-center">
+      <div class="card custom-form">
         <div class="card-header card-header-primary">
           <h4 class="card-title">
+            <i class="fa fa-user" aria-hidden="true"></i>
             INICIAR SESIÓN
           </h4>
         </div>
@@ -20,8 +33,6 @@
           <h6 class="card-category">
               {% if msg %}
                 <span class="text-danger">{{ msg | safe }}</span>
-              {% else %}
-                  Inicia sesión
               {% endif %}  
           </h6>
           
@@ -53,9 +64,9 @@
 
             <br />
 
-            <button type="submit" name="login" class="btn btn-primary pull-left">Login</button>
+            <button type="submit" class="btn btn-primary pull-left">Ingresar</button>
 
-            &nbsp; &nbsp; 
+            &nbsp; &nbsp;
             <span class="pull-right">
               No tienes cuenta? <a href="{% url 'authentication:register' %}" class="text-primary">Crear</a>
             </span>
@@ -67,8 +78,9 @@
       </div>
     </div>
   </div>
+</div>
 
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+{% endblock javascripts %}
