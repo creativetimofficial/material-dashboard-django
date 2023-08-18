@@ -1,0 +1,250 @@
+{% extends "layouts/base.html" %}
+{% load custom_tags %}
+
+
+{% block title %}{% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.2.9/css/responsive.bootstrap5.min.css">
+<style>
+/* Estilo para fila seleccionada */
+.selected-row {
+background-color: #f2f2f2;
+}
+th {
+    white-space: pre-wrap !important;
+    font-weight: bold;
+}
+td {
+    white-space: pre-wrap !important;
+}
+.dataTables_paginate .paginate_button {
+    background-color: #E3E3E3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 2px 2px;
+    margin: 2px;
+}
+thead th input {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+
+/* Estilos para los botones */
+.dataTables_wrapper .dt-buttons {
+  float: center;
+}
+
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="row">
+      <div class="col-lg-12 col-md-12">
+          <h3>{% block title_module %}{% endblock %}</h3>
+        <div class="card">
+          <div class="card-header card-header-primary">
+            <h4 class="card-title" style="font-size: 20px;">{% block title_table %}{% endblock %}</h4>
+          </div>
+          <div class="card-body table-responsive">
+            {% if actions %}
+            <div class="alert alert-info alert-dismissible fade show" role="alert">
+                <b>Selecciona un registro del listado, para visualizar las opciones que dispone</b>
+                <span class="close" data-dismiss="alert">×</span>
+            </div>
+            {% endif %}
+            <table class="table table-hover table-bordered" id="employeeTable">
+              <thead class="text-primary">
+                <tr>
+                  {% for column_name in column_names %}
+                    <th>{{ column_name }}</th>
+                  {% endfor %}
+                </tr>
+                <tr>
+                  {% for _ in column_names %}
+                    <th></th>
+                  {% endfor %}
+                </tr>
+              </thead>
+              <tbody>
+               {% for atr in models %}
+                <tr data-id="{{ atr.pk }}">
+                  {% for field in fields %}
+                    <td>{{ atr|get_field_value:field }}</td>
+                  {% endfor %}
+                </tr>
+              {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!------------------------------------------ Crear botones ---------------------------------------->
+    <div id="popoverContent" style="display: none;">
+      {% if actions %}
+        {% for action in actions %}
+            {% if action.url_args %}
+            <a href="{% url action.url 10 %}" class="btn btn-sm btn-{{ action.color }}" title="{{ action.title }}">
+              <i class="fa fa-{{ action.icon }}"></i>
+            </a>
+            {% else %}
+                <a href="{% url action.url %}" class="btn btn-sm btn-{{ action.color }}" title="{{ action.title }}">
+                  <i class="fa fa-{{ action.icon }}"></i>
+                </a>
+            {% endif %}
+        {% endfor %}
+      {% else %}
+        <p>No hay acciones disponibles</p>
+      {% endif %}
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+
+<script>
+  $(document).ready(function() {
+    $('#employeeTable').DataTable({
+      responsive: false, // Permite que la tabla sea responsive
+      searching: true, // Permite que la tabla tenga buscador
+      "language": {
+        "lengthMenu": "Mostrar _MENU_ registros por página", // Cambia el texto de la paginación
+        "zeroRecords": "No se encontraron resultados en su búsqueda", // Cambia el texto de cuando no hay registros
+        "searchPlaceholder": "Buscar registros", // Cambia el texto del buscador
+        "info": "Mostrando registros de _START_ al _END_ de un total de _TOTAL_", // Cambia el texto de la información de la tabla
+        "infoEmpty": "No existen registros", // Cambia el texto de cuando no hay registros
+        "infoFiltered": "(filtrado de un total de _MAX_ registros)", // Cambia el texto de cuando se filtra
+        "search": "Buscar:", // Cambia el texto del buscador
+        "paginate": {
+          "previous": "Anterior", // Cambia el texto del botón "Anterior"
+          "next": "Siguiente",     // Cambia el texto del botón "Siguiente"
+          "sFirst":       "Primero",
+          "sLast":        "Último",
+        }
+      },
+        dom: 'Blfrtip',
+        buttons: [
+            'copy', 'csv', 'excel', 'pdf', 'print'
+        ],
+      "paging": true,
+      "ordering": true,
+      "order": [[0, "asc"]],
+      "info": true,
+      "autoWidth": false,
+      "lengthMenu": [[10, 50, 100, 1000, 10000], [10, 50, 100, 1000, 10000]],
+      columnDefs: [
+        { "orderable": true, "targets": 0 } // Habilita el ordenamiento solo en los títulos de las columnas
+      ],
+      "lengthChange": true,
+      "pagingType": "full_numbers",
+    });
+  });
+</script>
+
+<script>
+  // POPOVER PARA MOSTRAR LAS ACCIONES DE CADA REGISTRO
+    $(document).ready(function () {
+      var activePopover = null;
+
+      // Función para ocultar el popover
+      function hidePopover() {
+        if (activePopover) {
+          activePopover.popover("hide");
+          activePopover = null;
+        }
+      }
+
+      // Cuando se hace clic en la tabla (delegación de eventos)
+      $("#employeeTable").on("click", "tbody tr", function () {
+        // Si ya hay un popover activo, lo ocultamos antes de mostrar el nuevo
+        hidePopover();
+
+        var popoverContent = $("#popoverContent").html();
+
+        //obtener la pk del registro o fila dadi el data-pk
+        var pk = $(this).data("id");
+
+        // Reemplazar el placeholder {pk} por la pk del registro
+        popoverContent = popoverContent.replace("pk", pk);
+
+        // Mostrar el popover
+        $(this).popover({
+          title: "Detalles",
+          content: popoverContent,
+          placement: "bottom",
+          html: true,
+          trigger: "manual"
+        }).popover("show");
+
+        // Guardar referencia al popover activo
+        activePopover = $(this);
+      });
+
+      // Cuando se hace clic fuera del popover, ocultarlo
+      $(document).on("click", function (event) {
+        if (activePopover && !activePopover.is(event.target) && activePopover.has(event.target).length === 0) {
+          hidePopover();
+        }
+      });
+    });
+</script>
+
+<script>
+  //SELECCIONAR FILA
+  $(document).ready(function () {
+    var activeRow = null;
+
+    // Cuando se hace clic en una fila
+    $("#employeeTable tbody tr").click(function () {
+      if (activeRow) {
+        activeRow.removeClass("selected-row");
+      }
+
+      $(this).addClass("selected-row");
+      activeRow = $(this);
+    });
+  });
+</script>
+
+<script>
+//AGREGAR FILTRO DE BUSQUEDA EN CADA COLUMNA
+  $(document).ready(function() {
+    var table = $('#employeeTable').DataTable();
+
+    // Agregar el buscador en el pie de tabla
+    $('#employeeTable thead tr:eq(1) th').each(function() {
+      var title = $(this).text();
+      $(this).html('<input type="text" placeholder="Buscar ' + title + '" />');
+    });
+
+    // Aplicar el filtro de búsqueda en cada columna
+    table.columns().every(function() {
+      var that = this;
+      $('input', this.header()).on('keyup change', function() {
+        if (that.search() !== this.value) {
+          that.search(this.value).draw();
+        }
+      });
+    });
+
+    // Habilitar el ordenamiento en las columnas
+    $('#employeeTable thead th').each(function() {
+      $(this).addClass('sorting');
+    });
+  });
+</script>
+
+{% endblock javascripts %}

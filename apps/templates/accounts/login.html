@@ -1,18 +1,31 @@
 {% extends "layouts/base.html" %}
 
-{% block title %} Login {% endblock %} 
+{% block title %} Iniciar sesion {% endblock %}
 
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
+{% block stylesheets %}
+<style>
+  .custom-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .custom-form {
+  }
+
+</style>
+{% endblock stylesheets %}
 
 {% block content %}
 
-  <div class="row">
-    <div class="col-md-5">
-      <div class="card">
+<div class="container">
+  <div class="row justify-content-center align-items-center">
+    <div class="col-md-5 custom-center">
+      <div class="card custom-form">
         <div class="card-header card-header-primary">
           <h4 class="card-title">
-            Login
+            <i class="fa fa-user" aria-hidden="true"></i>
+            INICIAR SESIÓN
           </h4>
         </div>
         <div class="card-body">
@@ -20,21 +33,19 @@
           <h6 class="card-category">
               {% if msg %}
                 <span class="text-danger">{{ msg | safe }}</span>
-              {% else %}
-                  Add your credentials
               {% endif %}  
           </h6>
           
           <br />
 
           <form role="form" method="post" action="">
-              
-            {% csrf_token %} 
+
+            {% csrf_token %}
 
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label class="bmd-label-floating">Username</label>
+                  <label class="bmd-label-floating">Nombre de usuario</label>
                   {{ form.username }}
                 </div>
               </div>
@@ -45,7 +56,7 @@
             <div class="row">
               <div class="col-md-12">
                 <div class="form-group">
-                  <label class="bmd-label-floating">Password</label>
+                  <label class="bmd-label-floating">Contraseña</label>
                   {{ form.password }}
                 </div>
               </div>
@@ -53,11 +64,11 @@
 
             <br />
 
-            <button type="submit" name="login" class="btn btn-primary pull-left">Login</button>
+            <button type="submit" class="btn btn-primary pull-left">Ingresar</button>
 
-            &nbsp; &nbsp; 
+            &nbsp; &nbsp;
             <span class="pull-right">
-              Don't have an account? <a href="{% url 'register' %}" class="text-primary">Create</a>
+              No tienes cuenta? <a href="{% url 'authentication:register' %}" class="text-primary">Crear</a>
             </span>
 
             <div class="clearfix"></div>
@@ -67,8 +78,9 @@
       </div>
     </div>
   </div>
+</div>
 
 {% endblock content %}
 
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+{% block javascripts %}
+{% endblock javascripts %}

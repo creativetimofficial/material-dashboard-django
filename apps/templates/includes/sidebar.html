@@ -1,8 +1,7 @@
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-1.jpg">
       <div class="logo">
-        <a target="_blank" rel="noopener noreferrer" 
-           href="https://appseed.us/admin-dashboards/django-dashboard-material" class="simple-text logo-normal">
-          Django Material
+        <a class="simple-text logo-normal">
+          Vissagge
         </a>
       </div>
       <div class="sidebar-wrapper">
@@ -10,33 +9,36 @@
         {% if request.user.is_authenticated %}
 
           <li class="nav-item {% if 'index' in segment %} active {% endif %}">
-            <a class="nav-link" href="/">
+            <a class="nav-link" href="{% url 'home:inicio' %}">
               <i class="material-icons">dashboard</i>
               <p>Dashboard</p>
             </a>
           </li>
-          <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">
-            <a class="nav-link" href="/page-user.html">
-              <i class="material-icons">person</i>
-              <p>User Profile</p>
-            </a>
-          </li>
-          <li class="nav-item {% if 'ui-tables' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ui-tables.html">
-              <i class="material-icons">content_paste</i>
-              <p>Table List</p>
-            </a>
-          </li>
-          <li class="nav-item {% if 'ui-typography' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ui-typography.html">
-              <i class="material-icons">library_books</i>
-              <p>Typography</p>
-            </a>
-          </li>
-          <li class="nav-item {% if 'ui-icons' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ui-icons.html">
-              <i class="material-icons">bubble_chart</i>
-              <p>Icons</p>
+          <li class="nav-item {% if 'ui-tables' in segment or 'ui-typography' in segment or 'registrar_inventario_form' in segment %} active show {% endif %}">
+          <a class="nav-link" href="#submenu" data-toggle="collapse" aria-expanded="false">
+            <i class="material-icons">content_paste</i>
+            <p>Registrar</p>
+          </a>
+          <ul class="collapse {% if 'ui-tables' in segment or 'ui-typography' in segment or activo or activo_listar %} show {% endif %}" id="submenu">
+            <li class="nav-item {% if activo %} active {% endif %}">
+              <a class="nav-link" href="{% url 'home:registrar_inventario' %}">
+                <i class="material-icons">library_books</i>
+                <p>Registrar Inventario</p>
+              </a>
+            </li>
+            <li class="nav-item {% if activo_listar %} active {% endif %}">
+              <a class="nav-link" href="{% url 'home:listar_inventario' %}">
+                <i class="material-icons">content_paste</i>
+                <p>Lista Inventario</p>
+              </a>
+            </li>
+            <!-- Puedes agregar más elementos al submenú aquí si es necesario -->
+          </ul>
+        </li>
+          <li class="nav-item {% if activo_calendario %} active {% endif %}">
+            <a class="nav-link" href="{% url 'home:calendario' %}">
+              <i class="material-icons">date_range</i>
+              <p>Calendario</p>
             </a>
           </li>
           <li class="nav-item {% if 'ui-maps' in segment %} active {% endif %}">
@@ -51,41 +53,21 @@
               <p>Notifications</p>
             </a>
           </li>
-          
-          <li class="nav-item ">
-            <a class="nav-link" href="/page-rtl-support.html">
-              <i class="material-icons">language</i>
-              <p>RTL Support</p>
-            </a>
-          </li>
 
           <li class="nav-item ">
-            <a class="nav-link" href="{% url 'logout' %}" >
+            <a class="nav-link" href="{% url 'authentication:logout' %}" >
               <i class="material-icons">directions_run</i>
-              <p>Logout</p>
+              <p>Cerrar sesion</p>
             </a>
           </li>
-
-          <li class="nav-item active-pro ">
-            <a class="nav-link" 
-               target="_blank" rel="noopener noreferrer"  
-               href="https://appseed.us/admin-dashboards/django-dashboard-material-pro">
-              <i class="material-icons">unarchive</i>
-              <p>PRO Version</p>
-            </a>
-          </li>
-
         {% else %}
 
-          <li class="nav-item active">
-            <a class="nav-link" 
-               target="_blank" rel="noopener noreferrer"  
-               href="https://appseed.us/admin-dashboards/django-dashboard-material-pro">
-              <i class="material-icons">unarchive</i>
-              <p>PRO Version</p>
-            </a>
-          </li>          
-
+            <li class="nav-item {% if 'index' in segment %} active {% endif %}">
+                <a class="nav-link" href="{% url 'home:static_page' %}">
+                <i class="fa fa-home"></i>
+                <p>Pagina de Inicio</p>
+                </a>
+            </li>
         {% endif %}
         </ul>
       </div>

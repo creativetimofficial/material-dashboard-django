@@ -14,6 +14,11 @@ __pycache__/
 # venv
 env
 venv
+.idea/
+*/migrations/*
+!*/migrations/__init__.py
+/apps/home/migrations/
+
 
 # other
 .DS_Store

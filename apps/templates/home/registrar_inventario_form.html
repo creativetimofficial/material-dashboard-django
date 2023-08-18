@@ -1,0 +1,50 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Registrar inventario {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+{% block titulo_form %}Registrar Invetario{% endblock %}
+
+{% block title_module %}VISAGGE INVENTARIO{% endblock %}
+
+{% block content_form %}
+
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="row mb-3">
+      <div class="col-md-6">
+        {{ form.nombre.label_tag }}
+        {{ form.nombre }}
+      </div>
+      <div class="col-md-6">
+        {{ form.descripcion.label_tag }}
+        {{ form.descripcion }}
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        {{ form.precio.label_tag }}
+        {{ form.precio }}
+      </div>
+      <div class="col-md-6">
+        {{ form.estado.label_tag }}
+        {{ form.estado }}
+      </div>
+    </div>
+    <div class="row mb-3">
+      <div class="col-md-6">
+        {{ form.categoria.label_tag }}
+        {{ form.categoria }}
+      </div>
+      <div class="col-md-6">
+        {{ form.cantidad.label_tag }}
+        {{ form.cantidad }}
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-floppy-o" ></i> Guardar</button>
+  </form>
+
+{% endblock %}
+
+{% block javascripts %}{% endblock javascripts %}

@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Inventario</title>
+    <!-- Agregar enlace a los archivos CSS de Bootstrap -->
+    <link href="/static/assets/css/material-dashboard.css?v=2.4.5" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+      <link rel="icon" type="image/png" href="/static/assets/img/favicon.png">
+
+</head>
+<style>
+    #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: white; /* Cambiar el color del fondo a blanco */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999; /* Asegurar que la capa se muestre por encima de todo */
+        opacity: 1; /* Opacidad inicial, 1 es totalmente visible */
+        transition: opacity 0.5s ease; /* Transición de opacidad durante 0.5 segundos con efecto suave */
+      }
+
+
+    .overlay-content {
+        color: black; /* Cambiar el color del texto a negro */
+        font-size: 24px;
+      }
+    .spinner {
+        border: 4px solid #f3f3f3; /* Color del borde */
+        border-top: 4px solid #3498db; /* Color del borde del spinner */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 0.7s linear infinite; /* Animación de rotación */
+      }
+
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+    /* Estilos para superponer el contenedor de partículas detrás del contenido */
+    #particles-container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1; /* Coloca el contenedor detrás del contenido */
+    }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+
+    }
+    .card-zoom {
+        transition: transform 0.3s;
+    }
+
+    .card-zoom:hover {
+        transform: scale(1.05);
+    }
+
+</style>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #273746 !important; color: white">
+        <div class="container">
+            <p class="navbar-brand">Gestión de Inventario</p>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary" href="{% url 'authentication:login' %}">Iniciar sesión</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                <h1>Gestion de Inventario</h1>
+                <p class="lead">Aquí podrás controlar y administrar tu inventario de productos de manera eficiente.</p>
+            </div>
+        </div>
+    </div>
+
+    <!---------- Contenido de noticias -------------->
+    <div class="container mt-5">
+        <h2>Últimas novedades</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://picsum.photos/200/150" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Título de la noticia 1</h5>
+                        <p class="card-text">Descripción breve de la noticia 1.</p>
+                        <a href="#" class="btn btn-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://picsum.photos/200/150" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Título de la noticia 1</h5>
+                        <p class="card-text">Descripción breve de la noticia 1.</p>
+                        <a href="#" class="btn btn-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <img src="https://picsum.photos/200/150" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">Título de la noticia 1</h5>
+                        <p class="card-text">Descripción breve de la noticia 1.</p>
+                        <a href="#" class="btn btn-primary">Leer más</a>
+                    </div>
+                </div>
+            </div>
+            <!-- Agrega más tarjetas de noticias aquí -->
+        </div>
+    </div> <!---------- Contenido de noticias -------------->
+
+    <!-- Apartado: Acerca de Nosotros -->
+
+    <div class="container mt-5">
+        <section class="py-5 bg-light border border">
+            <div class="container">
+                <h2 class="text-center">Acerca de Nosotros</h2>
+                <p class="text-center">Somos una empresa comprometida en brindar soluciones de gestión de inventario eficientes</p>
+            </div>
+        </section>
+    </div>
+
+    <!-- Apartado: Ventajas Clave -->
+    <div class="container mt-5">
+        <section class="py-5">
+            <div class="container">
+                <h2 class="text-center">Ventajas Clave</h2>
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card card-zoom">
+                            <div class="card-body">
+                                <h4 class="card-title text-center">Organización Superior</h4>
+                                <p class="card-text">Nuestra plataforma te ayuda a mantener tus productos perfectamente organizados</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-zoom">
+                            <div class="card-body">
+                                <h4 class="card-title text-center">Seguimiento en Tiempo Real</h4>
+                                <p class="card-text">Podrás monitorear tu inventario en tiempo real, lo que te permite tomar decisiones informadas</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card card-zoom">
+                            <div class="card-body">
+                                <h4 class="card-title text-center">Reducción de Pérdidas</h4>
+                                <p class="card-text">Nuestra plataforma te ayudará a minimizar las pérdidas y a evitar el agotamiento de productos</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!---------- loading -------------->
+    <div id="overlay">
+        <div class="overlay-content">
+            <div class="spinner"></div>
+        </div>
+    </div>
+    <!---------- loading -------------->
+    <div id="particles-container"></div>
+
+</body>
+<!-- Agregar enlace al archivo JS de Bootstrap -->
+<script>
+    window.onload = function() {
+      var overlay = document.getElementById('overlay');
+      overlay.style.opacity = '0';
+
+    setTimeout(function() {
+        overlay.style.display = 'none';
+      }, 400); // 500ms para dar tiempo a la transición antes de ocultar la capa
+    };
+</script>
+<script>
+    particlesJS("particles-container", {
+        particles: {
+            number: {
+                value: 5,
+                density: {
+                    enable: true,
+                    value_area: 800
+                }
+            },
+            color: {
+                value: "#67839D"
+            },
+            shape: {
+                type: "polygon",
+                stroke: {
+                    width: 0,
+                    color: "#000"
+                },
+                polygon: {
+                    nb_sides: 6
+                },
+                image: {
+                    src: "path/to/your/custom/shape.png",
+                    width: 100,
+                    height: 100
+                }
+            },
+            opacity: {
+                value: 0.3,
+                random: true,
+                anim: {
+                    enable: false,
+                    speed: 1,
+                    opacity_min: 0.1,
+                    sync: false
+                }
+            },
+            size: {
+                value: 160,
+                random: false,
+                anim: {
+                    enable: false,
+                    speed: 40,
+                    size_min: 0.1,
+                    sync: false
+                }
+            },
+            line_linked: {
+                enable: false,
+                distance: 150,
+                color: "#273746",
+                opacity: 0.4,
+                width: 1
+            },
+            move: {
+                enable: true,
+                speed: 5,
+                direction: "none",
+                random: false,
+                straight: false,
+                out_mode: "out",
+                bounce: false,
+                attract: {
+                    enable: false,
+                    rotateX: 600,
+                    rotateY: 1200
+                }
+            }
+        },
+        interactivity: {
+            detect_on: "canvas",
+            events: {
+                onhover: {
+                    enable: true,
+                    mode: "repulse"
+                },
+                onclick: {
+                    enable: true,
+                    mode: "push"
+                },
+                resize: true
+            },
+            modes: {
+                grab: {
+                    distance: 400,
+                    line_linked: {
+                        opacity: 1
+                    }
+                },
+                bubble: {
+                    distance: 400,
+                    size: 40,
+                    duration: 2,
+                    opacity: 8,
+                    speed: 3
+                },
+                repulse: {
+                    distance: 100
+                },
+                push: {
+                    particles_nb: 4
+                },
+                remove: {
+                    particles_nb: 2
+                }
+            }
+        },
+        retina_detect: true
+    });
+</script>
+
+</html>

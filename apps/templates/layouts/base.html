@@ -25,7 +25,7 @@
   <link rel="canonical" href="https://appseed.us/admin-dashboards/django-dashboard-material">
 
   <title>
-    Django Material Dashboard - {% block title %}{% endblock %} | AppSeed
+    {% block title %}{% endblock %}
   </title>
 
   <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no' name='viewport' />
@@ -33,14 +33,65 @@
   <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
   <!-- CSS Files -->
-  <link href="/static/assets/css/material-dashboard.css?v=2.1.2" rel="stylesheet" />
+  <link href="/static/assets/css/material-dashboard.css?v=2.4.5" rel="stylesheet" />
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="/static/assets/demo/demo.css" rel="stylesheet" />
+  <!--icons-->
+  <script src="https://kit.fontawesome.com/8471c03786.js" crossorigin="anonymous"></script>
+  <!--Graficos-->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <!-- Specific Page CSS goes HERE  -->
   {% block stylesheets %}{% endblock stylesheets %}
 
 </head>
+
+<style>
+  #overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white; /* Cambiar el color del fondo a blanco */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Asegurar que la capa se muestre por encima de todo */
+    opacity: 1; /* Opacidad inicial, 1 es totalmente visible */
+    transition: opacity 0.5s ease; /* Transición de opacidad durante 0.5 segundos con efecto suave */
+  }
+
+
+  .overlay-content {
+    color: black; /* Cambiar el color del texto a negro */
+    font-size: 24px;
+  }
+  .spinner {
+    border: 4px solid #f3f3f3; /* Color del borde */
+    border-top: 4px solid #3498db; /* Color del borde del spinner */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 0.7s linear infinite; /* Animación de rotación */
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  #success {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+  }
+  .content {
+    padding-top: 0 !important;
+    margin-top: 50px !important;
+  }
+
+</style>
 
 <body class="">
   <div class="wrapper ">
@@ -53,11 +104,45 @@
 
       <!-- End Navbar -->
       <div class="content">
+
         <div class="container-fluid">
+          <h3>{% block title_detail %} {% endblock %}</h3>
+          {% if messages %}
+                {% for message in messages %}
+                  <div id="success" class="alert alert-{{ message.tags }} alert-dismissible fade show {% if message.tags == 'error' %}alert-danger{% endif %}" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
 
-          {% block content %}{% endblock content %}
+          {% block content %}
 
+          <!--Contenido de formularios-->
+            <div class="container-fluid col-md-12">
+              <h3>{% block title_module %}{% endblock %}</h3>
+              <div class="card">
+                <div class="card-header card-header-primary">
+                  <h4 class="card-title" style="font-size: 20px;">{% block titulo_form %}{% endblock %}</h4>
+                </div>
+                <div class="row">
+                  <div class="col-md-12">
+                    <div class="card-body">
+                      <div class="alert alert-info alert-dismissible fade show" role="alert">
+                          <b>Las opciones con (*) son obligatorias</b>
+                          <span class="close" data-dismiss="alert">×</span>
+                      </div>
+                      {% block content_form %}{% endblock %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!--fin de formularios-->
+
+          {% endblock content %}
         </div>
+
+
       </div>
 
       {% include 'includes/footer.html' %}
@@ -65,7 +150,13 @@
     </div>
   </div>
 
-  {% include 'includes/fixed-plugin.html' %}
+  <div id="overlay">
+    <div class="overlay-content">
+        <div class="spinner"></div>
+    </div>
+  </div>
+
+  <!-- {% include 'includes/fixed-plugin.html' %} -->
 
   {% include 'includes/scripts.html' %}
 
@@ -73,6 +164,24 @@
   
   <!-- Specific Page JS goes HERE  -->
   {% block javascripts %}{% endblock javascripts %}
-  
+
+  <script>
+    // Ocultar la capa de superposición cuando la página haya cargado completamente
+    window.onload = function() {
+      var overlay = document.getElementById('overlay');
+      overlay.style.opacity = '0';
+
+    setTimeout(function() {
+        overlay.style.display = 'none';
+      }, 400); // 500ms para dar tiempo a la transición antes de ocultar la capa
+    };
+
+    // Ocultar el mensaje de éxito después de 2 segundos
+    setTimeout(function() {
+        $("#success").alert("close");
+    }, 2000);
+
+  </script>
+
 </body>
 </html>
