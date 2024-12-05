@@ -16,52 +16,92 @@ from .forms import IngresoForm, GastoForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
-    
 @login_required(login_url="/login/")
-def contabilidad_view(request):
-    context = {'segment': 'contabilidad.html'}
-
-# BUSCAR INGRESOS
-    searchi_query = request.GET.get('search_ingreso', '')
-
-    if searchi_query:
-        ingresos = Ingreso.objects.filter(id_ingreso__icontains=searchi_query)
+def ingresos_view(request):
+    # BUSCAR INGRESOS
+    search_query = request.GET.get('search', '')
+    if search_query:
+        ingresos = Ingreso.objects.filter(id_ingreso__icontains=search_query)
     else:
         ingresos = Ingreso.objects.all()
-        
-# BUSCAR GASTOS
-    searchg_query = request.GET.get('search_gasto', '')
 
-    if searchg_query:
-        gastos = Gasto.objects.filter(id_gasto__icontains=searchg_query)
-    else:
-        gastos = Gasto.objects.all()
-    
-    context['ingresos'] = ingresos
-    context['gastos'] = gastos
-    
-     # Manejo de formularios para añadir ingresos y gastos
+    context = {
+        'ingresos': ingresos,
+    }
+
+    # Manejo de formularios para añadir ingresos y gastos
     if request.method == 'POST':
         if 'add_ingreso' in request.POST:  # Si se pulsa el botón de Ingreso
             ingreso_form = IngresoForm(request.POST)
             if ingreso_form.is_valid():
                 ingreso_form.save()
-                return redirect('contabilidad')  # Redirige a la misma página
-        elif 'add_gasto' in request.POST:  # Si se pulsa el botón de Gasto
+                return redirect('ingresos')  # Redirige a la misma página
+        elif 'edit_ingreso' in request.POST:  # Si se pulsa el botón de Editar
+            # Obtener el id del ingreso desde el formulario POST
+            ingreso_id = request.POST.get('ingreso_id')  # El ID viene con el formulario
+            ingreso = get_object_or_404(Ingreso, id_ingreso=ingreso_id)
+            ingreso_form = IngresoForm(request.POST, instance=ingreso)
+            if ingreso_form.is_valid():
+                ingreso_form.save()
+                return redirect('ingresos')  # Redirige a la misma página
+    else:
+        ingreso_form = IngresoForm()
+
+    # Si estamos editando un ingreso, obtenemos ese ingreso
+    ingreso_id = request.GET.get('edit', None)
+    if ingreso_id:
+        ingreso = get_object_or_404(Ingreso, id_ingreso=ingreso_id)
+        ingreso_form = IngresoForm(instance=ingreso)
+
+    context['ingreso_form'] = ingreso_form
+
+    html_template = loader.get_template('home/ingresos.html')
+    return HttpResponse(html_template.render(context, request))
+
+
+@login_required(login_url="/login/")
+def gastos_view(request):
+    # BUSCAR GASTOS
+    search_query = request.GET.get('search', '')
+    if search_query:
+        gastos = Gasto.objects.filter(id_gasto__icontains=search_query)
+    else:
+        gastos = Gasto.objects.all()
+
+    context = {
+        'gastos': gastos,
+    }
+
+    # Manejo de formularios para añadir gastos y gastos
+    if request.method == 'POST':
+        if 'add_gasto' in request.POST:  # Si se pulsa el botón de Gasto
             gasto_form = GastoForm(request.POST)
             if gasto_form.is_valid():
                 gasto_form.save()
-                return redirect('contabilidad')
+                return redirect('gastos')  # Redirige a la misma página
+        elif 'edit_gasto' in request.POST:  # Si se pulsa el botón de Editar
+            # Obtener el id del gasto desde el formulario POST
+            gasto_id = request.POST.get('gasto_id')  # El ID viene con el formulario
+            gasto = get_object_or_404(Gasto, id_gasto=gasto_id)
+            gasto_form = GastoForm(request.POST, instance=gasto)
+            if gasto_form.is_valid():
+                gasto_form.save()
+                return redirect('gastos')  # Redirige a la misma página
     else:
-        ingreso_form = IngresoForm()
         gasto_form = GastoForm()
-        
-    context['ingreso_form'] = ingreso_form
+
+    # Si estamos editando un gasto, obtenemos ese gasto
+    gasto_id = request.GET.get('edit', None)
+    if gasto_id:
+        gasto = get_object_or_404(Gasto, id_gasto=gasto_id)
+        gasto_form = GastoForm(instance=gasto)
+
     context['gasto_form'] = gasto_form
 
-    
-    html_template = loader.get_template('home/contabilidad.html')
+    html_template = loader.get_template('home/gastos.html')
     return HttpResponse(html_template.render(context, request))
+
+
 
 @login_required(login_url="/login/")
 def eliminar_ingreso(request, ingreso_id):
