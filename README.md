@@ -48,8 +48,8 @@
 
 ```bash
 $ # Get the code
-$ git clone https://github.com/creativetimofficial/material-dashboard-django.git
-$ cd material-dashboard-django
+$ git clone https://github.com/imorlxs/django-ddsi
+$ cd django-ddsi
 $
 $ # Virtualenv modules installation (Unix based systems)
 $ virtualenv env
