@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.template import loader
 from django.urls import reverse
+from django.db.models import Sum
 
 # Modelos DDSI
 from .models import Ingreso  
@@ -16,6 +17,23 @@ from .forms import IngresoForm, GastoForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 
+def contabilidad_view(request):
+      # Calcular la suma de los ingresos
+    total_ingresos = Ingreso.objects.all().aggregate(total=Sum('monto_ingreso'))['total'] or 0
+
+    # Calcular la suma de los gastos
+    total_gastos = Gasto.objects.all().aggregate(total=Sum('monto_gasto'))['total'] or 0
+
+    # Calcular el balance neto
+    balance_neto = total_ingresos - total_gastos
+
+    # Pasar todo al contexto
+    return render(request, 'home/contabilidad.html', {
+        'total_ingresos': total_ingresos,
+        'total_gastos': total_gastos,
+        'balance_neto': balance_neto,
+    })
+    
 @login_required(login_url="/login/")
 def ingresos_view(request):
     # BUSCAR INGRESOS
