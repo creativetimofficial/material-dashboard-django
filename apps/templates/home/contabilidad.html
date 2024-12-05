@@ -36,12 +36,15 @@
                   <button type="button" rel="tooltip" class="btn btn-info btn-round">
                     <i class="material-icons">person</i>
                   </button>
-                  <button type="button" rel="tooltip" class="btn btn-success btn-round">
+                  <button type="button" rel="tooltip" class="btn btn-success btn-round" data-toggle="modal" data-target="#editIngresoModal">
                     <i class="material-icons">edit</i>
                   </button>
-                  <button type="button" rel="tooltip" class="btn btn-danger btn-round">
-                    <i class="material-icons">close</i>
-                  </button>
+                  <form action="{% url 'eliminar_ingreso' ingreso.id_ingreso %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-round">
+                      <i class="material-icons">close</i>
+                    </button>
+                  </form>
                 </td>
               </tr>
               {% endfor %}
@@ -102,7 +105,7 @@
 <div class="modal" id="addIngresoModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form method="post" action="{% url 'add_ingreso' %}">
+      <form method="post">
         {% csrf_token %}
         <div class="modal-header">
           <h5 class="modal-title">Añadir Ingreso</h5>
@@ -126,7 +129,7 @@
 <div class="modal" id="addGastoModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-      <form method="post" action="{% url 'add_gasto' %}">
+      <form method="post">
         {% csrf_token %}
         <div class="modal-header">
           <h5 class="modal-title">Añadir Gasto</h5>
@@ -139,7 +142,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar Gasto</button>
+          <button type="submit" class="btn btn-primary" name="add_gasto">Guardar Gasto</button>
         </div>
       </form>
     </div>
