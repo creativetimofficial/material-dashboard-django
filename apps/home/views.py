@@ -21,8 +21,22 @@ from django.contrib import messages
 def contabilidad_view(request):
     context = {'segment': 'contabilidad.html'}
 
-    ingresos = Ingreso.objects.all()
-    gastos = Gasto.objects.all()
+# BUSCAR INGRESOS
+    searchi_query = request.GET.get('search_ingreso', '')
+
+    if searchi_query:
+        ingresos = Ingreso.objects.filter(id_ingreso__icontains=searchi_query)
+    else:
+        ingresos = Ingreso.objects.all()
+        
+# BUSCAR GASTOS
+    searchg_query = request.GET.get('search_gasto', '')
+
+    if searchg_query:
+        gastos = Gasto.objects.filter(id_gasto__icontains=searchg_query)
+    else:
+        gastos = Gasto.objects.all()
+    
     context['ingresos'] = ingresos
     context['gastos'] = gastos
     
