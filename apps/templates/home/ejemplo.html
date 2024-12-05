@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Añadir Ingreso</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ ingreso_form.as_p }}  <!-- Renderiza el formulario como párrafos -->
+    <button type="submit">Añadir Ingreso</button>
+  </form>
+{% endblock %}
