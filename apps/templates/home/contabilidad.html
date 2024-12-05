@@ -33,9 +33,6 @@
                 <td class="text-center">{{ ingreso.id_ingreso }}</td>
                 <td>&euro; {{ ingreso.monto_ingreso }}</td>
                 <td class="td-actions text-right">
-                  <button type="button" rel="tooltip" class="btn btn-info btn-round">
-                    <i class="material-icons">person</i>
-                  </button>
                   <button type="button" rel="tooltip" class="btn btn-success btn-round" data-toggle="modal" data-target="#editIngresoModal">
                     <i class="material-icons">edit</i>
                   </button>
@@ -82,15 +79,15 @@
                 <td class="text-center">{{ gasto.id_gasto }}</td>
                 <td>&euro; {{ gasto.monto_gasto }}</td>
                 <td class="td-actions text-right">
-                  <button type="button" rel="tooltip" class="btn btn-info btn-round">
-                    <i class="material-icons">person</i>
-                  </button>
                   <button type="button" rel="tooltip" class="btn btn-success btn-round">
                     <i class="material-icons">edit</i>
                   </button>
-                  <button type="button" rel="tooltip" class="btn btn-danger btn-round">
-                    <i class="material-icons">close</i>
-                  </button>
+                  <form action="{% url 'eliminar_gasto' gasto.id_gasto %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger btn-round">
+                      <i class="material-icons">close</i>
+                    </button>
+                  </form>
                 </td>
               </tr>
               {% endfor %}

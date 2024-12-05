@@ -59,6 +59,15 @@ def eliminar_ingreso(request, ingreso_id):
     return redirect('contabilidad')  # Redirige a la vista de contabilidad
 
 @login_required(login_url="/login/")
+def eliminar_gasto(request, gasto_id):
+    # Asegurarse de que la solicitud sea POST
+    if request.method == 'POST':
+        gasto = get_object_or_404(Gasto, id_gasto=gasto_id)
+        gasto.delete()  # Elimina el ingreso de la base de datos
+
+    return redirect('contabilidad')  # Redirige a la vista de contabilidad
+
+@login_required(login_url="/login/")
 def index(request):
     context = {'segment': 'index'}
 
