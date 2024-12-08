@@ -175,3 +175,48 @@ def pages(request):
     
     
 
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Campaña
+from .forms import CampañaForm
+
+def dar_de_alta_campaña(request):
+    if request.method == 'POST':
+        form = CampañaForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('marketing_lista_campañas')  # Redirige a la lista de campañas
+    else:
+        form = CampañaForm()
+    return render(request, 'marketing/dar_de_alta_campaña.html', {'form': form})
+
+def modificar_campaña(request, campaign_id):
+    campaña = get_object_or_404(Campaña, id_campaña=campaign_id)
+
+    # Restricciones semánticas: no permitir cambios en ciertos campos si la campaña está activa
+    if campaña.estado == 'activa' and request.method == 'POST':
+        # Si la campaña está activa, no permitir cambios en ciertos campos (como el tipo de campaña)
+        form = CampañaForm(request.POST, instance=campaña)
+        if form.is_valid():
+            form.save()
+            return redirect('marketing_lista_campañas')
+    elif request.method == 'POST':
+        form = CampañaForm(request.POST, instance=campaña)
+        if form.is_valid():
+            form.save()
+            return redirect('marketing_lista_campañas')
+    else:
+        form = CampañaForm(instance=campaña)
+
+    return render(request, 'marketing/modificar_campaña.html', {'form': form, 'campaña': campaña})
+
+
+def listar_campañas(request):
+    # Obtener todas las campañas o filtrar según el estado (activa, pendiente, finalizada, cancelada)
+    campañas = Campaña.objects.all()  # O filtrar, por ejemplo, .filter(estado='activa')
+    return render(request, 'marketing/listar_campañas.html', {'campañas': campañas})
+
+def eliminar_campaña(request, campaign_id):
+    if request.method == 'POST':
+        campaña = get_object_or_404(Campaña, id_campaña=campaign_id)
+        campaña.delete()  # Elimina la campaña de la base de datos
+    return redirect('marketing_lista_campañas')  # Redirige a la lista de campañas

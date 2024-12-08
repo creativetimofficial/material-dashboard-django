@@ -87,9 +87,8 @@ class Campaña(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     motivo_bajaCampaña = models.CharField(max_length=50, null=True, blank=True)
 
-    def _str_(self):
+    def __str__(self):  # Correzione: '__str__' al posto di '_str_'
         return self.nombre_campaña
-
 
 # Genera
 class Genera(models.Model):
@@ -119,3 +118,4 @@ class Compra(models.Model):
 
     class Meta:
         unique_together = ('id_producto', 'dnisocio')
+
