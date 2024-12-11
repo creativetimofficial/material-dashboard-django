@@ -47,7 +47,7 @@ def ingresos_view(request):
         'ingresos': ingresos,
     }
 
-    # Manejo de formularios para añadir ingresos y gastos
+    # Manejo de formularios para anadir ingresos y gastos
     if request.method == 'POST':
         if 'add_ingreso' in request.POST:  # Si se pulsa el botón de Ingreso
             ingreso_form = IngresoForm(request.POST)
@@ -90,7 +90,7 @@ def gastos_view(request):
         'gastos': gastos,
     }
 
-    # Manejo de formularios para añadir gastos y gastos
+    # Manejo de formularios para anadir gastos y gastos
     if request.method == 'POST':
         if 'add_gasto' in request.POST:  # Si se pulsa el botón de Gasto
             gasto_form = GastoForm(request.POST)
@@ -176,47 +176,47 @@ def pages(request):
     
 
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Campaña
-from .forms import CampañaForm
+from .models import Campana
+from .forms import CampanaForm
 
-def dar_de_alta_campaña(request):
+def dar_de_alta_campana(request):
     if request.method == 'POST':
-        form = CampañaForm(request.POST)
+        form = CampanaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('marketing_lista_campañas')  # Redirige a la lista de campañas
+            return redirect('marketing_lista_campanas')  # Redirige a la lista de campanas
     else:
-        form = CampañaForm()
-    return render(request, 'marketing/dar_de_alta_campaña.html', {'form': form})
+        form = CampanaForm()
+    return render(request, 'marketing/dar_de_alta_campana.html', {'form': form})
 
-def modificar_campaña(request, campaign_id):
-    campaña = get_object_or_404(Campaña, id_campaña=campaign_id)
+def modificar_campana(request, campaign_id):
+    campana = get_object_or_404(Campana, id_campana=campaign_id)
 
-    # Restricciones semánticas: no permitir cambios en ciertos campos si la campaña está activa
-    if campaña.estado == 'activa' and request.method == 'POST':
-        # Si la campaña está activa, no permitir cambios en ciertos campos (como el tipo de campaña)
-        form = CampañaForm(request.POST, instance=campaña)
+    # Restricciones semánticas: no permitir cambios en ciertos campos si la campana está activa
+    if campana.estado == 'activa' and request.method == 'POST':
+        # Si la campana está activa, no permitir cambios en ciertos campos (como el tipo de campana)
+        form = CampanaForm(request.POST, instance=campana)
         if form.is_valid():
             form.save()
-            return redirect('marketing_lista_campañas')
+            return redirect('marketing_lista_campanas')
     elif request.method == 'POST':
-        form = CampañaForm(request.POST, instance=campaña)
+        form = CampanaForm(request.POST, instance=campana)
         if form.is_valid():
             form.save()
-            return redirect('marketing_lista_campañas')
+            return redirect('marketing_lista_campanas')
     else:
-        form = CampañaForm(instance=campaña)
+        form = CampanaForm(instance=campana)
 
-    return render(request, 'marketing/modificar_campaña.html', {'form': form, 'campaña': campaña})
+    return render(request, 'marketing/modificar_campana.html', {'form': form, 'campana': campana})
 
 
-def listar_campañas(request):
-    # Obtener todas las campañas o filtrar según el estado (activa, pendiente, finalizada, cancelada)
-    campañas = Campaña.objects.all()  # O filtrar, por ejemplo, .filter(estado='activa')
-    return render(request, 'marketing/listar_campañas.html', {'campañas': campañas})
+def listar_campanas(request):
+    # Obtener todas las campanas o filtrar según el estado (activa, pendiente, finalizada, cancelada)
+    campanas = Campana.objects.all()  # O filtrar, por ejemplo, .filter(estado='activa')
+    return render(request, 'marketing/listar_campanas.html', {'campanas': campanas})
 
-def eliminar_campaña(request, campaign_id):
+def eliminar_campana(request, campaign_id):
     if request.method == 'POST':
-        campaña = get_object_or_404(Campaña, id_campaña=campaign_id)
-        campaña.delete()  # Elimina la campaña de la base de datos
-    return redirect('marketing_lista_campañas')  # Redirige a la lista de campañas
+        campana = get_object_or_404(Campana, id_campana=campaign_id)
+        campana.delete()  # Elimina la campana de la base de datos
+    return redirect('marketing_lista_campanas')  # Redirige a la lista de campanas

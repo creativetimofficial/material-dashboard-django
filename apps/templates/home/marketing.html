@@ -1,0 +1,102 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Marketing {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="row">
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <a href="{% url 'listar_campanas' %}" style="text-decoration: none;">
+                <div class="card card-stats">
+                    <div class="card-header card-header-primary card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">campaign</i>
+                        </div>
+                        <p class="card-category">Campañas Activas</p>
+                        <h3 class="card-title">{{ active_campaigns|default:0 }}</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">date_range</i> Desde siempre
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <a href="{% url 'listar_campanas' %}" style="text-decoration: none;">
+                <div class="card card-stats">
+                    <div class="card-header card-header-warning card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">insert_chart</i>
+                        </div>
+                        <p class="card-category">Campañas Finalizadas</p>
+                        <h3 class="card-title">{{ completed_campaigns|default:0 }}</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">date_range</i> Desde siempre
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <a href="{% url 'listar_campanas' %}" style="text-decoration: none;">
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">attach_money</i>
+                        </div>
+                        <p class="card-category">Total Ingresos de Campañas</p>
+                        <h3 class="card-title">${{ total_campaign_income|floatformat:0 }}</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">date_range</i> Desde siempre
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-sm-6">
+            <a href="{% url 'listar_campanas' %}" style="text-decoration: none;">
+                <div class="card card-stats">
+                    <div class="card-header card-header-danger card-header-icon">
+                        <div class="card-icon">
+                            <i class="material-icons">cancel</i>
+                        </div>
+                        <p class="card-category">Campañas Canceladas</p>
+                        <h3 class="card-title">{{ canceled_campaigns|default:0 }}</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                            <i class="material-icons">date_range</i> Desde siempre
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+    });
+  </script>
+
+{% endblock javascripts %}

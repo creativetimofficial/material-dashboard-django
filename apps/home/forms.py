@@ -1,6 +1,6 @@
 from django import forms
 from .models import Ingreso, Gasto  # Importa los modelos
-from .models import Campaña
+from .models import Campana
 
 class IngresoForm(forms.ModelForm):
     class Meta:
@@ -18,7 +18,7 @@ class GastoForm(forms.ModelForm):
             'monto_gasto': forms.NumberInput(attrs={'class': 'form-control'}),
         }
 
-class CampañaForm(forms.ModelForm):
+class CampanaForm(forms.ModelForm):
     class Meta:
-        model = Campaña  # Associa il form al modello Campaña
-        fields = ['id_campaña', 'nombre_campaña', 'tipo', 'estado', 'precio', 'motivo_bajaCampaña']
+        model = Campana  # Associa il form al modello Campana
+        fields = ['nombre_campana', 'tipo', 'estado', 'precio', 'motivo_bajaCampana']

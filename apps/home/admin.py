@@ -7,6 +7,6 @@ from django.contrib import admin
 
 # Register your models here.
 
-from .models import Campaña
+from .models import Campana
 
-admin.site.register(Campaña)
+admin.site.register(Campana)

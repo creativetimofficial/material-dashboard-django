@@ -19,7 +19,7 @@ class Empleado(models.Model):
     fecha_nacEmpleado = models.DateField()
     motivo_bajaEmpleado = models.CharField(max_length=20, null=True, blank=True)
     fecha_bajaEmpleado = models.DateField(null=True, blank=True)
-    contraseña = models.CharField(max_length=4)
+    contrasena = models.CharField(max_length=4)
 
     def _str_(self):
         return f'{self.nombreEmpleado} {self.apellidosEmpleado}'
@@ -72,31 +72,31 @@ class Gasto(models.Model):
         return f'Gasto {self.id_gasto}'
 
 
-# Campaña
-class Campaña(models.Model):
+# Campana
+class Campana(models.Model):
     ESTADO_CHOICES = [
         ('activa', 'Activa'),
         ('pendiente', 'Pendiente'),
         ('finalizada', 'Finalizada')
     ]
 
-    id_campaña = models.CharField(max_length=10, primary_key=True)
-    nombre_campaña = models.CharField(max_length=20)
+    id_campana = models.CharField(max_length=10, primary_key=True)
+    nombre_campana = models.CharField(max_length=20)
     tipo = models.CharField(max_length=20)
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    motivo_bajaCampaña = models.CharField(max_length=50, null=True, blank=True)
+    motivo_bajaCampana = models.CharField(max_length=50, null=True, blank=True)
 
     def __str__(self):  # Correzione: '__str__' al posto di '_str_'
-        return self.nombre_campaña
+        return self.nombre_campana
 
 # Genera
 class Genera(models.Model):
-    id_campaña = models.ForeignKey(Campaña, on_delete=models.CASCADE)
+    id_campana = models.ForeignKey(Campana, on_delete=models.CASCADE)
     id_gasto = models.ForeignKey(Gasto, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = ('id_campaña', 'id_gasto')
+        unique_together = ('id_campana', 'id_gasto')
 
 
 # Ordena
