@@ -1,10 +1,10 @@
 {% extends 'layouts/base.html' %}
 
 {% block content %}
-    <h2>Agregar Nueva Campaña</h2>
+    <h2>Modificar Campaña: {{ campana.nombre_campana }}</h2>
     <form method="post">
         {% csrf_token %}
         {{ campana_form.as_p }}
-        <button type="submit">Agregar</button>
+        <button type="submit">Guardar</button>
     </form>
 {% endblock %}

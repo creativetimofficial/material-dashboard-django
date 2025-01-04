@@ -20,5 +20,13 @@ class GastoForm(forms.ModelForm):
 
 class CampanaForm(forms.ModelForm):
     class Meta:
-        model = Campana  
-        fields = ['nombre_campana', 'tipo', 'estado', 'precio', 'motivo_bajaCampana']
+        model = Campana
+        fields = ['id_campana', 'nombre_campana', 'tipo', 'estado', 'precio', 'motivo_bajaCampana']
+        widgets = {
+            'id_campana': forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre_campana': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipo': forms.TextInput(attrs={'class': 'form-control'}),
+            'estado': forms.Select(attrs={'class': 'form-control'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control'}),
+            'motivo_bajaCampana': forms.TextInput(attrs={'class': 'form-control'}),
+        }

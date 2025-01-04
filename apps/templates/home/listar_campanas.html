@@ -1,72 +1,97 @@
 {% extends "layouts/base.html" %}
-{% block title %} Listar Campañas {% endblock %}
-
-<!-- Specific Page CSS goes HERE  -->
-{% block stylesheets %}{% endblock stylesheets %}
-
 {% block content %}
+    <h2>Lista de Campañas</h2>
 
-<div class="row">
+    <!-- Formulario de búsqueda -->
+    <form method="get">
+        <input type="text" name="search" placeholder="Buscar..." value="{{ request.GET.search }}">
+        <button type="submit">Buscar</button>
+    </form>
 
-<!-- Campañas -->
-<div class="col-md-12">
-  <div class="card">
-    <div class="card-header card-header-primary">
-      <h4 class="card-title">Campañas</h4>
-      <p class="card-category">Listado de todas las campañas</p>
-      <div class="d-flex justify-content-between align-items-center">
-        <form method="get" action="{% url 'listar_campanas' %}" class="form-inline">
-          <input type="text" class="form-control" name="search" placeholder="Buscar Campaña..." value="{{ request.GET.search }}">
-          <button type="submit" class="btn btn-primary ml-2">Buscar</button>
-        </form>
-      </div>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table">
-          <thead class="text-primary">
-            <th class="text-center">ID</th>
-            <th>Nombre de la Campaña</th>
-            <th>Estado</th>
-          </thead>
-          <tbody>
+    <!-- Botón para agregar una nueva campaña -->
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCampanaModal">
+        Añadir Nueva Campaña
+    </button>
+
+    <!-- Tabla de campañas -->
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre de la Campaña</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
             {% for campana in campanas %}
-            <tr>
-              <td class="text-center">{{ campana.id_campana }}</td>
-              <td>{{ campana.nombre_campana }}</td>
-              <td>{{ campana.estado }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-              <td colspan="3" class="text-center">No se encontraron campañas.</td>
-            </tr>
+                <tr>
+                    <td>{{ campana.id_campana }}</td>
+                    <td>{{ campana.nombre_campana }}</td>
+                    <td>{{ campana.tipo }}</td>
+                    <td>{{ campana.estado }}</td>
+                    <td>
+                        <!-- Botón para modificar -->
+                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#editCampanaModal" data-id="{{ campana.id_campana }}">
+                            Modificar
+                        </button>
+                        <!-- Formulario para eliminar -->
+                        <form action="{% url 'eliminar_campana' campana.id_campana %}" method="post" style="display:inline;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-danger">Eliminar</button>
+                        </form>
+                    </td>
+                </tr>
             {% endfor %}
-          </tbody>
-        </table>
-      </div>
+        </tbody>
+    </table>
 
-      <!-- Paginación (si es necesario) -->
-      <div class="pagination">
-        {% if campanas.has_previous %}
-        <a href="?page=1&search={{ request.GET.search }}" class="btn btn-secondary">Primera</a>
-        <a href="?page={{ campanas.previous_page_number }}&search={{ request.GET.search }}" class="btn btn-secondary">Anterior</a>
-        {% endif %}
-
-        <span class="current-page">Página {{ campanas.number }} de {{ campanas.paginator.num_pages }}</span>
-
-        {% if campanas.has_next %}
-        <a href="?page={{ campanas.next_page_number }}&search={{ request.GET.search }}" class="btn btn-secondary">Siguiente</a>
-        <a href="?page={{ campanas.paginator.num_pages }}&search={{ request.GET.search }}" class="btn btn-secondary">Última</a>
-        {% endif %}
-      </div>
-
+    <!-- Modal para añadir campaña -->
+    <div class="modal" id="addCampanaModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">Añadir Nueva Campaña</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ campana_form }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Añadir</button>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-</div>
-
-{% endblock content %}
-
-<!-- Specific Page JS goes HERE  -->
-{% block javascripts %}{% endblock javascripts %}
+    <!-- Modal para modificar campaña -->
+    <div class="modal" id="editCampanaModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modificar Campaña</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        {{ campana_form }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Modificar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

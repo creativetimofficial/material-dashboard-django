@@ -18,10 +18,10 @@ urlpatterns = [
     path('eliminar_ingreso/<int:ingreso_id>/', views.eliminar_ingreso, name='eliminar_ingreso'),   
     path('eliminar_gasto/<int:gasto_id>/', views.eliminar_gasto, name='eliminar_gasto'),    
  
-    path('listar_campanas/', views.listar_campanas, name='listar_campanas'),  
+    path('campanas/', views.listar_campanas, name='listar_campanas'),
     path('campanas/nueva/', views.dar_de_alta_campana, name='dar_de_alta_campana'),
-    # path('campanas/modificar/<str:campaign_id>/', views.modificar_campana, name='modificar_campana'),
-    # path('campanas/eliminar/<str:campaign_id>/', views.eliminar_campana, name='eliminar_campana'),
+    path('campanas/editar/<int:campana_id>/', views.modificar_campana, name='modificar_campana'),
+    path('campanas/eliminar/<int:campana_id>/', views.eliminar_campana, name='eliminar_campana'),
 
     
     # Matches any html file
