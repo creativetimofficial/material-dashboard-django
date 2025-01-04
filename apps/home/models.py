@@ -87,8 +87,8 @@ class Campana(models.Model):
     precio = models.DecimalField(max_digits=10, decimal_places=2)
     motivo_bajaCampana = models.CharField(max_length=50, null=True, blank=True)
 
-    def __str__(self):  # Correzione: '__str__' al posto di '_str_'
-        return self.nombre_campana
+    def _str_(self):  
+        return f'Campana {self.nombre_campana}'
 
 # Genera
 class Genera(models.Model):

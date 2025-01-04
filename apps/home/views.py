@@ -16,6 +16,8 @@ from .models import Gasto
 from .forms import IngresoForm, GastoForm
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from .models import Campana
+
 
 def contabilidad_view(request):
       # Calcular la suma de los ingresos
@@ -175,48 +177,146 @@ def pages(request):
     
     
 
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Campana
-from .forms import CampanaForm
+# Vista para listar las campañas
+@login_required(login_url="/login/")
+def listar_campanas(request):
+    # Obtener todas las campañas o filtrar según el estado
+    campanas = Campana.objects.all()  # O filtrar, por ejemplo, .filter(estado='activa')
+    return render(request, 'home/listar_campanas.html', {'campanas': campanas})
 
+
+
+# Vista para dar de alta una campaña (crear una nueva)
+@login_required(login_url="/login/")
 def dar_de_alta_campana(request):
     if request.method == 'POST':
         form = CampanaForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('marketing_lista_campanas')  # Redirige a la lista de campanas
+            messages.success(request, 'Campaña creada con éxito')
+            return redirect('listar_campanas')  # Redirige a la lista de campañas
     else:
         form = CampanaForm()
-    return render(request, 'marketing/dar_de_alta_campana.html', {'form': form})
+    return render(request, 'home/dar_de_alta_campana.html', {'form': form})
 
+'''
+# Vista para modificar una campaña existente
+@login_required(login_url="/login/")
 def modificar_campana(request, campaign_id):
     campana = get_object_or_404(Campana, id_campana=campaign_id)
 
-    # Restricciones semánticas: no permitir cambios en ciertos campos si la campana está activa
+    # Restricciones semánticas: no permitir cambios en ciertos campos si la campaña está activa
     if campana.estado == 'activa' and request.method == 'POST':
-        # Si la campana está activa, no permitir cambios en ciertos campos (como el tipo de campana)
+        # Si la campaña está activa, no permitir cambios en ciertos campos (como el tipo de campaña)
         form = CampanaForm(request.POST, instance=campana)
         if form.is_valid():
             form.save()
-            return redirect('marketing_lista_campanas')
+            messages.success(request, 'Campaña modificada con éxito')
+            return redirect('listar_campanas')
     elif request.method == 'POST':
         form = CampanaForm(request.POST, instance=campana)
         if form.is_valid():
             form.save()
-            return redirect('marketing_lista_campanas')
+            messages.success(request, 'Campaña modificada con éxito')
+            return redirect('listar_campanas')
     else:
         form = CampanaForm(instance=campana)
 
-    return render(request, 'marketing/modificar_campana.html', {'form': form, 'campana': campana})
+    return render(request, 'home/modificar_campana.html', {'form': form, 'campana': campana})
 
 
-def listar_campanas(request):
-    # Obtener todas las campanas o filtrar según el estado (activa, pendiente, finalizada, cancelada)
-    campanas = Campana.objects.all()  # O filtrar, por ejemplo, .filter(estado='activa')
-    return render(request, 'marketing/listar_campanas.html', {'campanas': campanas})
-
+# Vista para eliminar una campaña
+@login_required(login_url="/login/")
 def eliminar_campana(request, campaign_id):
     if request.method == 'POST':
         campana = get_object_or_404(Campana, id_campana=campaign_id)
-        campana.delete()  # Elimina la campana de la base de datos
-    return redirect('marketing_lista_campanas')  # Redirige a la lista de campanas
+        campana.delete()  # Elimina la campaña de la base de datos
+        messages.success(request, 'Campaña eliminada con éxito')
+    return redirect('listar_campanas')  # Redirige a la lista de campañas
+
+
+# Resto de vistas
+
+@login_required(login_url="/login/")
+def contabilidad_view(request):
+    total_ingresos = Ingreso.objects.all().aggregate(total=Sum('monto_ingreso'))['total'] or 0
+    total_gastos = Gasto.objects.all().aggregate(total=Sum('monto_gasto'))['total'] or 0
+    balance_neto = total_ingresos - total_gastos
+    return render(request, 'home/contabilidad.html', {
+        'total_ingresos': total_ingresos,
+        'total_gastos': total_gastos,
+        'balance_neto': balance_neto,
+    })
+
+
+@login_required(login_url="/login/")
+def ingresos_view(request):
+    search_query = request.GET.get('search', '')
+    if search_query:
+        ingresos = Ingreso.objects.filter(id_ingreso__icontains=search_query)
+    else:
+        ingresos = Ingreso.objects.all()
+
+    context = {'ingresos': ingresos}
+
+    if request.method == 'POST':
+        if 'add_ingreso' in request.POST:
+            ingreso_form = IngresoForm(request.POST)
+            if ingreso_form.is_valid():
+                ingreso_form.save()
+                return redirect('ingresos')
+        elif 'edit_ingreso' in request.POST:
+            ingreso_id = request.POST.get('ingreso_id')
+            ingreso = get_object_or_404(Ingreso, id_ingreso=ingreso_id)
+            ingreso_form = IngresoForm(request.POST, instance=ingreso)
+            if ingreso_form.is_valid():
+                ingreso_form.save()
+                return redirect('ingresos')
+    else:
+        ingreso_form = IngresoForm()
+
+    ingreso_id = request.GET.get('edit', None)
+    if ingreso_id:
+        ingreso = get_object_or_404(Ingreso, id_ingreso=ingreso_id)
+        ingreso_form = IngresoForm(instance=ingreso)
+
+    context['ingreso_form'] = ingreso_form
+    html_template = loader.get_template('home/ingresos.html')
+    return HttpResponse(html_template.render(context, request))
+
+
+@login_required(login_url="/login/")
+def gastos_view(request):
+    search_query = request.GET.get('search', '')
+    if search_query:
+        gastos = Gasto.objects.filter(id_gasto__icontains=search_query)
+    else:
+        gastos = Gasto.objects.all()
+
+    context = {'gastos': gastos}
+
+    if request.method == 'POST':
+        if 'add_gasto' in request.POST:
+            gasto_form = GastoForm(request.POST)
+            if gasto_form.is_valid():
+                gasto_form.save()
+                return redirect('gastos')
+        elif 'edit_gasto' in request.POST:
+            gasto_id = request.POST.get('gasto_id')
+            gasto = get_object_or_404(Gasto, id_gasto=gasto_id)
+            gasto_form = GastoForm(request.POST, instance=gasto)
+            if gasto_form.is_valid():
+                gasto_form.save()
+                return redirect('gastos')
+    else:
+        gasto_form = GastoForm()
+
+    gasto_id = request.GET.get('edit', None)
+    if gasto_id:
+        gasto = get_object_or_404(Gasto, id_gasto=gasto_id)
+        gasto_form = GastoForm(instance=gasto)
+
+    context['gasto_form'] = gasto_form
+    html_template = loader.get_template('home/gastos.html')
+    return HttpResponse(html_template.render(context, request))
+'''

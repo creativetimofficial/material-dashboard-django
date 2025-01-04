@@ -20,5 +20,5 @@ class GastoForm(forms.ModelForm):
 
 class CampanaForm(forms.ModelForm):
     class Meta:
-        model = Campana  # Associa il form al modello Campana
+        model = Campana  
         fields = ['nombre_campana', 'tipo', 'estado', 'precio', 'motivo_bajaCampana']

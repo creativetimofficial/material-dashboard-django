@@ -1,0 +1,20 @@
+{% extends "layouts/base.html" %}
+
+{% block title %}Crear Nueva Campaña{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <h2 class="my-4">Crear Nueva Campaña</h2>
+    
+    <form method="POST">
+      {% csrf_token %}
+      <div class="form-group">
+        {{ form.as_p }}
+      </div>
+      <button type="submit" class="btn btn-primary">Crear Campaña</button>
+    </form>
+
+    <br><br>
+    <a href="{% url 'listar_campanas' %}" class="btn btn-secondary">Volver a la lista de campañas</a>
+  </div>
+{% endblock %}

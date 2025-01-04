@@ -1,0 +1,72 @@
+{% extends "layouts/base.html" %}
+{% block title %} Listar Campañas {% endblock %}
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+<div class="row">
+
+<!-- Campañas -->
+<div class="col-md-12">
+  <div class="card">
+    <div class="card-header card-header-primary">
+      <h4 class="card-title">Campañas</h4>
+      <p class="card-category">Listado de todas las campañas</p>
+      <div class="d-flex justify-content-between align-items-center">
+        <form method="get" action="{% url 'listar_campanas' %}" class="form-inline">
+          <input type="text" class="form-control" name="search" placeholder="Buscar Campaña..." value="{{ request.GET.search }}">
+          <button type="submit" class="btn btn-primary ml-2">Buscar</button>
+        </form>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="table-responsive">
+        <table class="table">
+          <thead class="text-primary">
+            <th class="text-center">ID</th>
+            <th>Nombre de la Campaña</th>
+            <th>Estado</th>
+          </thead>
+          <tbody>
+            {% for campana in campanas %}
+            <tr>
+              <td class="text-center">{{ campana.id_campana }}</td>
+              <td>{{ campana.nombre_campana }}</td>
+              <td>{{ campana.estado }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+              <td colspan="3" class="text-center">No se encontraron campañas.</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Paginación (si es necesario) -->
+      <div class="pagination">
+        {% if campanas.has_previous %}
+        <a href="?page=1&search={{ request.GET.search }}" class="btn btn-secondary">Primera</a>
+        <a href="?page={{ campanas.previous_page_number }}&search={{ request.GET.search }}" class="btn btn-secondary">Anterior</a>
+        {% endif %}
+
+        <span class="current-page">Página {{ campanas.number }} de {{ campanas.paginator.num_pages }}</span>
+
+        {% if campanas.has_next %}
+        <a href="?page={{ campanas.next_page_number }}&search={{ request.GET.search }}" class="btn btn-secondary">Siguiente</a>
+        <a href="?page={{ campanas.paginator.num_pages }}&search={{ request.GET.search }}" class="btn btn-secondary">Última</a>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}{% endblock javascripts %}
