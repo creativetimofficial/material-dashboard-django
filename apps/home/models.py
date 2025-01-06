@@ -80,7 +80,7 @@ class Campana(models.Model):
         ('finalizada', 'Finalizada')
     ]
 
-    id_campana = models.CharField(max_length=10, primary_key=True)
+    id_campana = models.AutoField(max_length=10, primary_key=True)
     nombre_campana = models.CharField(max_length=20)
     tipo = models.CharField(max_length=20)
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES)

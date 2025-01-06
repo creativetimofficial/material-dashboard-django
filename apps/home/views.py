@@ -202,7 +202,7 @@ def campanas_view(request):
                 # Ottieni la campagna corrispondente
                 campana = get_object_or_404(Campana, id_campana=campana_id)
                 campana_form = CampanaForm(request.POST, instance=campana)
-                
+
                 # Se il form è valido, salviamo i dati
                 if campana_form.is_valid():
                     campana_form.save()
@@ -213,14 +213,25 @@ def campanas_view(request):
                     messages.error(request, "Ci sono degli errori nel form.")
             else:
                 messages.error(request, "ID della campagna non trovato.")
-    
+        
+        # Verifica che sia stata cliccata l'aggiunta di una nuova campagna
+        elif 'add_campana' in request.POST:
+            campana_form = CampanaForm(request.POST)  # Crea un nuovo form con i dati inviati
+
+            # Se il form è valido, salviamo i dati
+            if campana_form.is_valid():
+                campana_form.save()
+                messages.success(request, "Nuova campagna aggiunta con successo!")
+                return redirect('campanas')  # Redirige alla vista delle campagne
+            else:
+                # Aggiungi un messaggio di errore se il form non è valido
+                messages.error(request, "Ci sono degli errori nel form.")
+
     context['campana_form'] = campana_form
 
     # Percorso del template
     html_template = loader.get_template('home/campanas.html')  
     return HttpResponse(html_template.render(context, request))
-
-
 
 @login_required(login_url="/login/")
 def eliminar_campana(request, id_campana):
