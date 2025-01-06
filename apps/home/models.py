@@ -88,7 +88,7 @@ class Campana(models.Model):
     motivo_bajaCampana = models.CharField(max_length=50, null=True, blank=True)
 
     def _str_(self):  
-        return f'Campana {self.nombre_campana}'
+        return f'Campana {self.id_campana}'
 
 # Genera
 class Genera(models.Model):

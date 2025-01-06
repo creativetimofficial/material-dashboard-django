@@ -179,14 +179,11 @@ def pages(request):
     
     
 @login_required(login_url="/login/")
-def listar_campanas(request):
+def campanas_view(request):
+    # Gestione della ricerca
     search_query = request.GET.get('search', '')
     if search_query:
-        campanas = Campana.objects.filter(
-            Q(nombre_campana__icontains=search_query) |
-            Q(tipo__icontains=search_query) |
-            Q(estado__icontains=search_query)
-        )
+        campanas = Campana.objects.filter(nombre_campana__icontains=search_query)
     else:
         campanas = Campana.objects.all()
 
@@ -194,45 +191,42 @@ def listar_campanas(request):
         'campanas': campanas,
     }
 
-    return render(request, 'home/listar_campanas.html', context)
-
-@login_required(login_url="/login/")
-def dar_de_alta_campana(request):
-    if request.method == 'POST':
-        campana_form = CampanaForm(request.POST)
-        if campana_form.is_valid():
-            campana_form.save()
-            return redirect('listar_campanas')  # Redirect alla lista delle campagne
-    else:
-        campana_form = CampanaForm()
-
-    context = {
-        'campana_form': campana_form
-    }
-
-    return render(request, 'home/dar_de_alta_campana.html', context)
-
-@login_required(login_url="/login/")
-def modificar_campana(request, campana_id):
-    campana = get_object_or_404(Campana, id_campana=campana_id)
+    # Gestione dei moduli
+    campana_form = CampanaForm()  # Inizializza sempre il form all'inizio
 
     if request.method == 'POST':
-        campana_form = CampanaForm(request.POST, instance=campana)
-        if campana_form.is_valid():
-            campana_form.save()
-            return redirect('listar_campanas')  # Redirect alla lista delle campagne
-    else:
-        campana_form = CampanaForm(instance=campana)
+        # Verifica che sia stata cliccata la modifica della campagna
+        if 'edit_campana' in request.POST:
+            campana_id = request.POST.get('campana_id')
+            if campana_id:
+                # Ottieni la campagna corrispondente
+                campana = get_object_or_404(Campana, id_campana=campana_id)
+                campana_form = CampanaForm(request.POST, instance=campana)
+                
+                # Se il form è valido, salviamo i dati
+                if campana_form.is_valid():
+                    campana_form.save()
+                    messages.success(request, "Campagna modificata con successo!")
+                    return redirect('campanas')  # Redirige alla vista delle campagne
+                else:
+                    # Aggiungi un messaggio di errore se il form non è valido
+                    messages.error(request, "Ci sono degli errori nel form.")
+            else:
+                messages.error(request, "ID della campagna non trovato.")
+    
+    context['campana_form'] = campana_form
 
-    context = {
-        'campana_form': campana_form,
-        'campana': campana
-    }
+    # Percorso del template
+    html_template = loader.get_template('home/campanas.html')  
+    return HttpResponse(html_template.render(context, request))
 
-    return render(request, 'home/modificar_campana.html', context)
+
 
 @login_required(login_url="/login/")
-def eliminar_campana(request, campana_id):
-    campana = get_object_or_404(Campana, id_campana=campana_id)
-    campana.delete()
-    return redirect('listar_campanas')  # Redirect alla lista delle campagne
+def eliminar_campana(request, id_campana):
+    # Assicurarsi che la richiesta sia POST
+    if request.method == 'POST':
+        campana = get_object_or_404(Campana, id_campana=id_campana)
+        campana.delete()  # Elimina la campagna dal database
+
+    return redirect('campanas')  # Redirige alla vista delle campagne

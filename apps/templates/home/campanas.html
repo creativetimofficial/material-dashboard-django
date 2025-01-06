@@ -1,0 +1,127 @@
+{% extends "layouts/base.html" %}
+{% block title %}Campañas{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-12">
+    <div class="card">
+      <div class="card-header card-header-primary">
+        <h4 class="card-title">Campañas</h4>
+        <p class="card-category">Listado de todas las campañas</p>
+        <div class="d-flex justify-content-between align-items-center">
+          <form method="get" action="{% url 'campanas' %}" class="form-inline">
+            <input type="text" class="form-control" name="search" placeholder="Buscar Campaña..." value="{{ request.GET.search }}">
+            <button type="submit" class="btn btn-primary ml-2">Buscar</button>
+          </form>
+          <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addCampanaModal">Añadir Campaña</button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table">
+            <thead class="text-primary">
+              <th class="text-center">ID</th>
+              <th>Nombre Campaña</th>
+              <th class="text-right">Acciones</th>
+            </thead>
+            <tbody>
+              {% for campana in campanas %}
+                <tr>
+                  <td class="text-center">{{ campana.id_campana }}</td>
+                  <td>{{ campana.nombre_campana }}</td>
+                  <td class="td-actions text-right">
+                    <!-- Pulsante di modifica -->
+                    <button type="button" class="btn btn-success btn-round edit-campana-btn" data-campana-id="{{ campana.id_campana }}">
+                      <i class="material-icons">edit</i>
+                    </button>
+                    <!-- Form per eliminare una campagna -->
+                    <form action="{% url 'eliminar_campana' campana.id_campana %}" method="post" style="display:inline;">
+                      {% csrf_token %}
+                      <button type="submit" class="btn btn-danger btn-round">
+                        <i class="material-icons">close</i>
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal per aggiungere una nuova campagna -->
+<div class="modal" id="addCampanaModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="post">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title">Añadir Campaña</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ campana_form }}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary" name="add_campana">Guardar Campaña</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal per modificare una campagna -->
+<div class="modal" id="editCampanaModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <form method="post">
+        {% csrf_token %}
+        <div class="modal-header">
+          <h5 class="modal-title">Editar Campaña</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          {{ campana_form }}
+          <!-- Campo nascosto per l'ID della campagna -->
+          <input type="hidden" id="campana_id" name="campana_id" value="">
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary" name="edit_campana">Confirmar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Script per impostare l'ID della campagna quando si clicca sul pulsante "Modifica" -->
+<script>
+  // Funzione per aggiornare il campo nascosto con l'ID della campagna
+  function setCampanaId(campanaId) {
+    document.getElementById('campana_id').value = campanaId;
+  }
+
+  // Aggiungi l'evento ai pulsanti di modifica
+  document.querySelectorAll('.edit-campana-btn').forEach(function(button) {
+    button.addEventListener('click', function() {
+      // Ottieni l'ID della campagna dal pulsante
+      const campanaId = button.getAttribute('data-campana-id');
+      
+      // Imposta l'ID della campagna nel campo nascosto
+      setCampanaId(campanaId);
+
+      // Mostra il modal per modificare la campagna
+      $('#editCampanaModal').modal('show');
+    });
+  });
+</script>
+
+{% endblock content %}
