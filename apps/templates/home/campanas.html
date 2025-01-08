@@ -30,11 +30,11 @@
                   <td class="text-center">{{ campana.id_campana }}</td>
                   <td>{{ campana.nombre_campana }}</td>
                   <td class="td-actions text-right">
-                    <!-- Pulsante di modifica -->
+                    
                     <button type="button" class="btn btn-success btn-round edit-campana-btn" data-campana-id="{{ campana.id_campana }}">
                       <i class="material-icons">edit</i>
                     </button>
-                    <!-- Form per eliminare una campagna -->
+                    <!-- Form to delete a campana -->
                     <form action="{% url 'eliminar_campana' campana.id_campana %}" method="post" style="display:inline;">
                       {% csrf_token %}
                       <button type="submit" class="btn btn-danger btn-round">
@@ -52,7 +52,7 @@
   </div>
 </div>
 
-<!-- Modal per aggiungere una nuova campagna -->
+<!-- Modal to add a campana -->
 <div class="modal" id="addCampanaModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -76,7 +76,7 @@
   </div>
 </div>
 
-<!-- Modal per modificare una campagna -->
+<!-- Modal to modify a campana -->
 <div class="modal" id="editCampanaModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -90,7 +90,7 @@
         </div>
         <div class="modal-body">
           {{ campana_form }}
-          <!-- Campo nascosto per l'ID della campagna -->
+          <!-- hidden fielf for the ID -->
           <input type="hidden" id="campana_id" name="campana_id" value="">
         </div>
         <div class="modal-footer">
@@ -102,23 +102,23 @@
   </div>
 </div>
 
-<!-- Script per impostare l'ID della campagna quando si clicca sul pulsante "Modifica" -->
+<!-- Script to automatically assign an ID -->
 <script>
-  // Funzione per aggiornare il campo nascosto con l'ID della campagna
+  // Function to update the hidden field with the ID
   function setCampanaId(campanaId) {
     document.getElementById('campana_id').value = campanaId;
   }
 
-  // Aggiungi l'evento ai pulsanti di modifica
+  // Add event to the modify's botton
   document.querySelectorAll('.edit-campana-btn').forEach(function(button) {
     button.addEventListener('click', function() {
-      // Ottieni l'ID della campagna dal pulsante
+      // Get ID from the botton
       const campanaId = button.getAttribute('data-campana-id');
       
-      // Imposta l'ID della campagna nel campo nascosto
+      // Apply ID in the hidden field
       setCampanaId(campanaId);
 
-      // Mostra il modal per modificare la campagna
+      // Show the modal to modify campana
       $('#editCampanaModal').modal('show');
     });
   });

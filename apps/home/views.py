@@ -180,7 +180,7 @@ def pages(request):
     
 @login_required(login_url="/login/")
 def campanas_view(request):
-    # Gestione della ricerca
+    # Search query
     search_query = request.GET.get('search', '')
     if search_query:
         campanas = Campana.objects.filter(nombre_campana__icontains=search_query)
@@ -191,53 +191,53 @@ def campanas_view(request):
         'campanas': campanas,
     }
 
-    # Gestione dei moduli
-    campana_form = CampanaForm()  # Inizializza sempre il form all'inizio
+    # Modules Management
+    campana_form = CampanaForm()  # Always initialize the form at the beginning
 
     if request.method == 'POST':
-        # Verifica che sia stata cliccata la modifica della campagna
+        # Verify that the campaign edit has been clicked
         if 'edit_campana' in request.POST:
             campana_id = request.POST.get('campana_id')
             if campana_id:
-                # Ottieni la campagna corrispondente
+                # Get the corresponding campaign
                 campana = get_object_or_404(Campana, id_campana=campana_id)
                 campana_form = CampanaForm(request.POST, instance=campana)
 
-                # Se il form è valido, salviamo i dati
+                # If the form is valid, we save the data
                 if campana_form.is_valid():
                     campana_form.save()
-                    messages.success(request, "Campagna modificata con successo!")
-                    return redirect('campanas')  # Redirige alla vista delle campagne
+                    messages.success(request, "¡Campaña editada con éxito!")
+                    return redirect('campanas')  # Redirects to the view of the campaign
                 else:
-                    # Aggiungi un messaggio di errore se il form non è valido
-                    messages.error(request, "Ci sono degli errori nel form.")
+                    # Add an error message if the form is invalid
+                    messages.error(request, "Hay algunos errores en el formulario.")
             else:
-                messages.error(request, "ID della campagna non trovato.")
+                messages.error(request, "No se encontró el ID de campaña.")
         
-        # Verifica che sia stata cliccata l'aggiunta di una nuova campagna
+        # Verify that adding a new campaign has been clicked
         elif 'add_campana' in request.POST:
-            campana_form = CampanaForm(request.POST)  # Crea un nuovo form con i dati inviati
+            campana_form = CampanaForm(request.POST)  # Create a new form with the submitted data
 
-            # Se il form è valido, salviamo i dati
+            # If the form is valid, we save the data
             if campana_form.is_valid():
                 campana_form.save()
-                messages.success(request, "Nuova campagna aggiunta con successo!")
-                return redirect('campanas')  # Redirige alla vista delle campagne
+                messages.success(request, "¡Nueva campaña agregada exitosamente!")
+                return redirect('campanas')  # Redirects to the view of the campaign
             else:
-                # Aggiungi un messaggio di errore se il form non è valido
-                messages.error(request, "Ci sono degli errori nel form.")
+                # Add an error message if the form is invalid
+                messages.error(request, "Hay algunos errores en el formulario.")
 
     context['campana_form'] = campana_form
 
-    # Percorso del template
+    # Template path
     html_template = loader.get_template('home/campanas.html')  
     return HttpResponse(html_template.render(context, request))
 
 @login_required(login_url="/login/")
 def eliminar_campana(request, id_campana):
-    # Assicurarsi che la richiesta sia POST
+    # Make sure the request is POST
     if request.method == 'POST':
         campana = get_object_or_404(Campana, id_campana=id_campana)
-        campana.delete()  # Elimina la campagna dal database
+        campana.delete()  # Delete the campaign from the database
 
-    return redirect('campanas')  # Redirige alla vista delle campagne
+    return redirect('campanas')  # redirects to the view of the campaign 

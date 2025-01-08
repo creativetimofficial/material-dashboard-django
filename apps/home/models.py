@@ -85,7 +85,6 @@ class Campana(models.Model):
     tipo = models.CharField(max_length=20)
     estado = models.CharField(max_length=10, choices=ESTADO_CHOICES)
     precio = models.DecimalField(max_digits=10, decimal_places=2)
-    motivo_bajaCampana = models.CharField(max_length=50, null=True, blank=True)
 
     def _str_(self):  
         return f'Campana {self.id_campana}'
