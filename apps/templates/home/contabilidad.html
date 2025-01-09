@@ -1,0 +1,82 @@
+{% extends "layouts/base.html" %}
+
+{% block title %} Contabilidad {% endblock %} 
+
+<!-- Specific Page CSS goes HERE  -->
+{% block stylesheets %}{% endblock stylesheets %}
+
+{% block content %}
+
+    <div class="row">
+
+      <div class="col-lg-3 col-md-6 col-sm-6">
+        <a href="{% url 'ingresos' %}" style="text-decoration: none;">
+          <div class="card card-stats">
+              <div class="card-header card-header-success card-header-icon">
+                  <div class="card-icon">
+                      <i class="material-icons">trending_up</i>
+                  </div>
+                  <p class="card-category">Total Ingresos</p>
+                  <h3 class="card-title">${{ total_ingresos|floatformat:0 }}</h3>
+              </div>
+              <div class="card-footer">
+                  <div class="stats">
+                      <i class="material-icons">date_range</i> Desde siempre
+                  </div>
+              </div>
+          </div>
+      </a>
+    </div>
+    
+    <div class="col-lg-3 col-md-6 col-sm-6">
+      <a href="{% url 'gastos' %}" style="text-decoration: none;">
+          <div class="card card-stats">
+              <div class="card-header card-header-danger card-header-icon">
+                  <div class="card-icon">
+                      <i class="material-icons">trending_down</i>
+                  </div>
+                  <p class="card-category">Total Gastos</p>
+                  <h3 class="card-title">${{ total_gastos|floatformat:0 }}</h3>
+              </div>
+              <div class="card-footer">
+                  <div class="stats">
+                      <i class="material-icons">date_range</i> Desde siempre
+                  </div>
+              </div>
+          </div>
+      </a>
+  </div>
+  
+    
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-stats">
+            <div class="card-header card-header-info card-header-icon">
+                <div class="card-icon">
+                    <i class="material-icons">account_balance_wallet</i>
+                </div>
+                <p class="card-category">Balance Neto</p>
+                <h3 class="card-title">${{ balance_neto|floatformat:0 }}</h3>
+            </div>
+            <div class="card-footer">
+                <div class="stats">
+                    <i class="material-icons">date_range</i> Desde siempre
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+{% endblock content %}
+
+<!-- Specific Page JS goes HERE  -->
+{% block javascripts %}
+
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+
+    });
+  </script>
+
+{% endblock javascripts %}

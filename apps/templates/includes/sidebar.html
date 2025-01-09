@@ -1,8 +1,8 @@
     <div class="sidebar" data-color="purple" data-background-color="white" data-image="/static/assets/img/sidebar-1.jpg">
       <div class="logo">
         <a target="_blank" rel="noopener noreferrer" 
-           href="https://appseed.us/admin-dashboards/django-dashboard-material" class="simple-text logo-normal">
-          Django Material
+            class="simple-text logo-normal">
+          Zapaterias Paqui
         </a>
       </div>
       <div class="sidebar-wrapper">
@@ -18,47 +18,36 @@
           <li class="nav-item {% if 'page-user' in segment %} active {% endif %}">
             <a class="nav-link" href="/page-user.html">
               <i class="material-icons">person</i>
-              <p>User Profile</p>
+              <p>Socios</p>
             </a>
           </li>
-          <li class="nav-item {% if 'ui-tables' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ui-tables.html">
-              <i class="material-icons">content_paste</i>
-              <p>Table List</p>
+          <li class="nav-item {% if 'contabilidad' in segment %} active {% endif %}">
+            <a class="nav-link" href="/contabilidad">
+              <i class="material-icons">payments</i>
+              <p>Contabilidad</p>
             </a>
           </li>
           <li class="nav-item {% if 'ui-typography' in segment %} active {% endif %}">
             <a class="nav-link" href="/ui-typography.html">
-              <i class="material-icons">library_books</i>
-              <p>Typography</p>
+              <i class="material-icons">inventory</i>
+              <p>Productos</p>
             </a>
           </li>
           <li class="nav-item {% if 'ui-icons' in segment %} active {% endif %}">
             <a class="nav-link" href="/ui-icons.html">
-              <i class="material-icons">bubble_chart</i>
-              <p>Icons</p>
-            </a>
-          </li>
-          <li class="nav-item {% if 'ui-maps' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ui-maps.html">
-              <i class="material-icons">location_ons</i>
-              <p>Maps</p>
-            </a>
-          </li>
-          <li class="nav-item {% if 'ui-notifications' in segment %} active {% endif %}">
-            <a class="nav-link" href="/ui-notifications.html">
-              <i class="material-icons">notifications</i>
-              <p>Notifications</p>
-            </a>
-          </li>
-          
-          <li class="nav-item ">
-            <a class="nav-link" href="/page-rtl-support.html">
-              <i class="material-icons">language</i>
-              <p>RTL Support</p>
+              <i class="material-icons">group</i>
+              <p>Personal</p>
             </a>
           </li>
 
+          <li class="nav-item {% if 'campanas' in segment %} active {% endif %}">
+            <a class="nav-link" href="{% url 'campanas' %}">
+              <i class="material-icons">ads_click</i>
+              <p>Marketing</p>
+            </a>
+          </li>
+
+          
           <li class="nav-item ">
             <a class="nav-link" href="{% url 'logout' %}" >
               <i class="material-icons">directions_run</i>
@@ -66,25 +55,9 @@
             </a>
           </li>
 
-          <li class="nav-item active-pro ">
-            <a class="nav-link" 
-               target="_blank" rel="noopener noreferrer"  
-               href="https://appseed.us/admin-dashboards/django-dashboard-material-pro">
-              <i class="material-icons">unarchive</i>
-              <p>PRO Version</p>
-            </a>
-          </li>
 
         {% else %}
-
-          <li class="nav-item active">
-            <a class="nav-link" 
-               target="_blank" rel="noopener noreferrer"  
-               href="https://appseed.us/admin-dashboards/django-dashboard-material-pro">
-              <i class="material-icons">unarchive</i>
-              <p>PRO Version</p>
-            </a>
-          </li>          
+          <!--Sidebar vacía si no hay nadie logeado-->
 
         {% endif %}
         </ul>

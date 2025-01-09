@@ -1,0 +1,41 @@
+def gastos_view(request):
+    # BUSCAR GASTOS
+    search_query = request.GET.get('search', '')
+    if search_query:
+        gastos = Gasto.objects.filter(id_gasto__icontains=search_query)
+    else:
+        gastos = Gasto.objects.all()
+
+    context = {
+        'gastos': gastos,
+    }
+
+    # Manejo de formularios para añadir gastos y gastos
+    if request.method == 'POST':
+        if 'add_gasto' in request.POST:  # Si se pulsa el botón de Gasto
+            gasto_form = GastoForm(request.POST)
+            if gasto_form.is_valid():
+                gasto_form.save()
+                return redirect('gastos')  # Redirige a la misma página
+        elif 'edit_gasto' in request.POST:  # Si se pulsa el botón de Editar
+            # Obtener el id del gasto desde el formulario POST
+            gasto_id = request.POST.get('gasto_id')  # El ID viene con el formulario
+            gasto = get_object_or_404(Gasto, id_gasto=gasto_id)
+            gasto_form = GastoForm(request.POST, instance=gasto)
+            if gasto_form.is_valid():
+                gasto_form.save()
+                return redirect('gastos')  # Redirige a la misma página
+    else:
+        gasto_form = GastoForm()
+
+    # Si estamos editando un gasto, obtenemos ese gasto
+    gasto_id = request.GET.get('edit', None)
+    if gasto_id:
+        gasto = get_object_or_404(Gasto, id_gasto=gasto_id)
+        gasto_form = GastoForm(instance=gasto)
+
+    context['gasto_form'] = gasto_form
+
+    html_template = loader.get_template('home/gastos.html')
+    return HttpResponse(html_template.render(context, request))
+
