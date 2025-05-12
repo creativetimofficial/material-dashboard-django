@@ -1,21 +1,22 @@
 {
-    "name": "material-dashboard-django",
-    "mastertemplate": "boilerplate-code-django-dashboard",
-    "version": "1.0.2",
-    "description": "Template project - Django Boilerplate Code ",
-    "scripts": {},
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/creativetimofficial/material-dashboard-django"
-    },
-    "bugs": {
-        "url": "https://github.com/creativetimofficial/material-dashboard-django/issues",
-        "email": "support@appseed.us"
-    },
-    "author": "Creative-Tim / AppSeed.us",
-    "engines": {
-        "node": ">=10.0.0"
-    },
-    "dependencies": {},
-    "devDependencies": {}
+  "name": "flask-datta-able",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "vite build --watch --mode development",
+    "build": "vite build --mode production && npm run minify-css",
+    "minify-css": "postcss static/assets/css/*.css --dir static/assets/css --no-map --ext .min.css"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.6",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.0",
+    "sass": "^1.85.1",
+    "vite": "^6.2.0"
+  }
 }

@@ -2,20 +2,35 @@
 
  ![version](https://img.shields.io/badge/version-1.0.1-blue.svg) [![GitHub issues open](https://img.shields.io/github/issues/creativetimofficial/material-dashboard-django.svg?maxAge=2592000)](https://github.com/creativetimofficial/material-dashboard-django/issues?q=is%3Aopen+is%3Aissue) [![GitHub issues closed](https://img.shields.io/github/issues-closed-raw/creativetimofficial/material-dashboard-django.svg?maxAge=2592000)](https://github.com/creativetimofficial/material-dashboard-django/issues?q=is%3Aissue+is%3Aclosed) [![Join the chat at https://gitter.im/NIT-dgp/General](https://badges.gitter.im/NIT-dgp/General.svg)](https://gitter.im/creative-tim-general/Lobby) [![Chat](https://img.shields.io/badge/chat-on%20discord-7289da.svg)](https://discord.gg/E4aHAQy)
 
-![Material Dashboard Django - Admin Dashboard coded in Django.](https://github.com/creativetimofficial/material-dashboard-django/blob/master/media/material-dashboard-django-intro.gif)
+Open-source **[Django Template](https://www.creative-tim.com/templates/django)** built on top of **Material Dashboard**, a modern Bootstrap 5 design. Start your development with a modern Bootstrap 5 Admin template for Django. Soft UI Dashboard is built with over 70 individual components, giving you the freedom of choosing and combining. If you want to code faster, with a smooth workflow, then you should try this template carefully developed with Django, a well-known Python Framework.
+
+> NOTE: Starter provided in partnership with [App-Generator](https://app-generator.dev/), an open-source platform for developers
 
 <br />
 
-> Free product - **Django Dashboard** starter project - Features:
+## Features: 
 
-- Up-to-date [dependencies](./requirements.txt): **Django 3.2.6 LTS**
-- [SCSS compilation](#recompile-css) via **Gulp**
-- UI Kit: **Material Dashboard** (Free Version) provided by **[Creative-Tim](https://www.creative-tim.com/)**
-- Django Codebase - provided by **[AppSeed](https://appseed.us/)**
-- UI-Ready app, SQLite Database, Django Native ORM
-- Modular design, clean code-base
-- Session-Based Authentication, Forms validation
-- Deployment scripts: Docker, Gunicorn / Nginx
+- Simple, Easy-to-Extend Codebase
+- Material Dashboard design Integration
+- Bootstrap CSS Styling 
+- Session-based Authentication, Password recovery
+- DB Persistence: SQLite (default), can be used with MySql, PgSql
+- Apps:
+  - [DEMO](https://django-material-dash2.onrender.com/dynamic-dt/product/) **Dynamic DataTables** - generate server-side datatables without coding
+  - [DEMO](https://django-material-dash2.onrender.com/api/product/) **Dynamic APIs** - Expose secure APIs without coding  
+  - [DEMO](https://django-material-dash2.onrender.com/charts/) **Charts** - powered by ApexCharts 
+- [Django CLI Package](https://app-generator.dev/docs/developer-tools/django-cli/index.html)
+    - `Commit/rollback Git Changes`
+    - `Backup & restore DB`
+    - `Interact with Django Core`
+    - `Manage Environment`
+    - `Manage Dependencies`  
+- [Deployment](https://app-generator.dev/docs/deployment.html)
+  - Docker/Docker Compose Scripts 
+  - CI/CD for [Render](https://app-generator.dev/docs/deployment/render/index.html)
+- [Vite](https://app-generator.dev/docs/technologies/vite/index.html) for assets management 
+
+![Django Material Dashboard - Open-Source Django Starter](https://github.com/user-attachments/assets/dba1a100-3309-400c-99bc-6ba707697509)
 
 <br />
 
@@ -36,7 +51,7 @@
 
 ## Demo
 
-> To authenticate use the default credentials ***test / ApS12_ZZs8*** or create a new user on the [registration page](https://creativetim-django-dashboard-black-pro.appseed.us/register/).
+> To authenticate use the default credentials or create a new user on the **registration page**.
 
 - **Material Dashboard Django** [Login Page](https://www.creative-tim.com/live/material-dashboard-django)
 
@@ -44,195 +59,95 @@
 
 ## Quick start
 
-> UNZIP the sources or clone the private repository. After getting the code, open a terminal and navigate to the working directory, with product source code.
+> 👉 Download the code  
 
 ```bash
-$ # Get the code
 $ git clone https://github.com/creativetimofficial/material-dashboard-django.git
 $ cd material-dashboard-django
-$
-$ # Virtualenv modules installation (Unix based systems)
-$ virtualenv env
-$ source env/bin/activate
-$
-$ # Virtualenv modules installation (Windows based systems)
-$ # virtualenv env
-$ # .\env\Scripts\activate
-$
-$ # Install modules - SQLite Storage
-$ pip3 install -r requirements.txt
-$
-$ # Create tables
-$ python manage.py makemigrations
-$ python manage.py migrate
-$
-$ # Start the application (development mode)
-$ python manage.py runserver # default port 8000
-$
-$ # Start the app - custom port
-$ # python manage.py runserver 0.0.0.0:<your_port>
-$
-$ # Access the web app in browser: http://127.0.0.1:8000/
 ```
 
-> Note: To use the app, please access the registration page and create a new user. After authentication, the app will unlock the private pages.
+<br />
+
+> 👉 Install modules via `VENV`  
+
+```bash
+$ virtualenv env
+$ source env/bin/activate
+$ pip install -r requirements.txt
+```
+
+<br />
+
+> 👉 Set Up Database
+
+```bash
+$ python manage.py makemigrations
+$ python manage.py migrate
+```
+
+<br />
+
+> 👉 Create the Superuser
+
+```bash
+$ python manage.py createsuperuser
+```
+
+<br />
+
+> 👉 Start the app
+
+```bash
+$ python manage.py runserver
+```
+
+At this point, the app runs at `http://127.0.0.1:8000/`. 
 
 <br />
 
 ## Documentation
-The documentation for the **Material Dashboard Django** is hosted at our [website](https://demos.creative-tim.com/material-dashboard-django/docs/1.0/getting-started/getting-started-django.html).
+
+The documentation for the **Soft UI Dashboard Django** is hosted at our [website](https://app-generator.dev/docs/products/django/soft-ui-dashboard/index.html).
 
 <br />
 
-## File Structure
-Within the download you'll find the following directories and files:
+## Codebase structure
+
+The project is coded using a simple and intuitive structure presented below:
 
 ```bash
 < PROJECT ROOT >
    |
-   |-- core/                               # Implements app configuration
-   |    |-- settings.py                    # Defines Global Settings
-   |    |-- wsgi.py                        # Start the app in production
-   |    |-- urls.py                        # Define URLs served by all apps/nodes
+   |-- config/                            
+   |    |-- settings.py                  # Project Configuration  
+   |    |-- urls.py                      # Project Routing
    |
    |-- apps/
-   |    |
-   |    |-- home/                          # A simple app that serve HTML files
-   |    |    |-- views.py                  # Serve HTML pages for authenticated users
-   |    |    |-- urls.py                   # Define some super simple routes  
-   |    |
-   |    |-- authentication/                # Handles auth routes (login and register)
-   |    |    |-- urls.py                   # Define authentication routes  
-   |    |    |-- views.py                  # Handles login and registration  
-   |    |    |-- forms.py                  # Define auth forms (login and register) 
-   |    |
-   |    |-- static/
-   |    |    |-- <css, JS, images>         # CSS files, Javascripts files
-   |    |
-   |    |-- templates/                     # Templates used to render pages
-   |         |-- includes/                 # HTML chunks and components
-   |         |    |-- navigation.html      # Top menu component
-   |         |    |-- sidebar.html         # Sidebar component
-   |         |    |-- footer.html          # App Footer
-   |         |    |-- scripts.html         # Scripts common to all pages
-   |         |
-   |         |-- layouts/                   # Master pages
-   |         |    |-- base-fullscreen.html  # Used by Authentication pages
-   |         |    |-- base.html             # Used by common pages
-   |         |
-   |         |-- accounts/                  # Authentication pages
-   |         |    |-- login.html            # Login page
-   |         |    |-- register.html         # Register page
-   |         |
-   |         |-- home/                      # UI Kit Pages
-   |              |-- index.html            # Index page
-   |              |-- 404-page.html         # 404 page
-   |              |-- *.html                # All other pages
+   |    |-- charts                        
+   |    |-- dyn_api                      # APP Routing
+   |    |-- dyn_dt                       # APP Models 
+   |    |-- pages                        # Tests  
+   |     
+   |-- requirements.txt                  # Project Dependencies
    |
-   |-- requirements.txt                     # Development modules - SQLite storage
-   |
-   |-- .env                                 # Inject Configuration via Environment
-   |-- manage.py                            # Start the app - Django default start script
+   |-- env.sample                        # ENV Configuration (default values)
+   |-- manage.py                         # Start the app - Django default start script
    |
    |-- ************************************************************************
 ```
 
 <br />
 
-> The bootstrap flow
+## Deploy on [Render](https://render.com/)
 
-- Django bootstrapper `manage.py` uses `core/settings.py` as the main configuration file
-- `core/settings.py` loads the app magic from `.env` file
-- Redirect the guest users to Login page
-- Unlock the pages served by *app* node for authenticated users
+- Create a Blueprint instance
+  - Go to https://dashboard.render.com/blueprints this link.
+- Click `New Blueprint Instance` button.
+- Connect your `repo` which you want to deploy.
+- Fill the `Service Group Name` and click on `Update Existing Resources` button.
+- After that your deployment will start automatically.
 
-<br />
-
-## Recompile CSS
-
-To recompile SCSS files, follow this setup:
-
-<br />
-
-**Step #1** - Install tools
-
-- [NodeJS](https://nodejs.org/en/) 12.x or higher
-- [Gulp](https://gulpjs.com/) - globally 
-    - `npm install -g gulp-cli`
-- [Yarn](https://yarnpkg.com/) (optional) 
-
-<br />
-
-**Step #2** - Change the working directory to `assets` folder
-
-```bash
-$ cd apps/static/assets
-```
-
-<br />
-
-**Step #3** - Install modules (this will create a classic `node_modules` directory)
-
-```bash
-$ npm install
-// OR
-$ yarn
-```
-
-<br />
-
-**Step #4** - Edit & Recompile SCSS files 
-
-```bash
-$ gulp scss
-```
-
-The generated file is saved in `static/assets/css` directory.
-
-<br /> 
-
-## Deployment
-
-The app is provided with a basic configuration to be executed in [Docker](https://www.docker.com/), [Gunicorn](https://gunicorn.org/), and [Waitress](https://docs.pylonsproject.org/projects/waitress/en/stable/).
-
-### [Docker](https://www.docker.com/) execution
----
-
-The application can be easily executed in a docker container. The steps:
-
-> Get the code
-
-```bash
-$ git clone https://github.com/creativetimofficial/material-dashboard-django.git
-$ cd material-dashboard-django
-```
-
-> Start the app in Docker
-
-```bash
-$ sudo docker-compose pull && sudo docker-compose build && sudo docker-compose up -d
-```
-
-Visit `http://localhost:85` in your browser. The app should be up & running.
-
-<br />
-
-## Browser Support
-
-At present, we officially aim to support the last two versions of the following browsers:
-
-<img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/chrome.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/firefox.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/edge.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/safari.png" width="64" height="64"> <img src="https://s3.amazonaws.com/creativetim_bucket/github/browser/opera.png" width="64" height="64">
-
-<br />
-
-## Resources
-
-- Demo: <https://www.creative-tim.com/live/material-dashboard-django>
-- Download Page: <https://www.creative-tim.com/product/material-dashboard-django>
-- Documentation: <https://demos.creative-tim.com/material-dashboard-django/docs/1.0/getting-started/getting-started-django.html>
-- License Agreement: <https://www.creative-tim.com/license>
-- Support: <https://www.creative-tim.com/contact-us>
-- Issues: [Github Issues Page](https://github.com/creativetimofficial/material-dashboard-django/issues)
+At this point, the product should be LIVE.
 
 <br />
 
@@ -246,9 +161,12 @@ We use GitHub Issues as the official bug tracker for the **Material Dashboard Dj
 
 <br />
 
-## Technical Support or Questions
+## Support
 
-If you have questions or need help integrating the product please [contact us](https://www.creative-tim.com/contact-us) instead of opening an issue.
+Being a product that is actively supported and improved, feel free to contact us using these funnels: 
+
+- **Creative-Tim** [Discord](https://discord.gg/haJ7ErsNY3) Server - for general product assistance and UI/UX
+- **App Generator** [Discord](https://discord.gg/fZC6hup) Server - for **Django specific questions** and assistance. 
 
 <br />
 
@@ -278,4 +196,4 @@ If you have questions or need help integrating the product please [contact us](h
 <br />
 
 ---
-[Material Dashboard Django](https://www.creative-tim.com/product/material-dashboard-django) - Provided by [Creative Tim](https://www.creative-tim.com/) and [AppSeed](https://appseed.us)
+[Material Dashboard Django](https://www.creative-tim.com/product/material-dashboard-django) - Provided by [Creative Tim](https://www.creative-tim.com/) and [App-Generator](https://app-generator.dev/).
